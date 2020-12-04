@@ -5,10 +5,13 @@
   "keywords": [],
   "main": "src/index.js",
   "dependencies": {
+    "@babel/core": "^7.12.3",
+    "@craco/craco": "^5.9.0",
     "@pmndrs/branding": "0.0.1",
     "@react-three/drei": "2.2.7",
+    "craco-glslify-loader": "^1.0.2",
     "glsl-noise": "^0.0.0",
-    "glslify": "7.1.1",
+    "glslify": "^7.1.1",
     "react": "17.0.0-rc.2",
     "react-dom": "17.0.0-rc.2",
     "react-scripts": "3.0.1",
@@ -20,10 +23,10 @@
     "typescript": "3.3.3"
   },
   "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build",
-    "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "start": "craco start",
+    "build": "craco build",
+    "test": "craco test",
+    "eject": "craco eject"
   },
   "browserslist": [
     ">0.2%",

@@ -89,6 +89,7 @@ export const ComponentMaterial = React.forwardRef(function ComponentMaterial(
     uniforms,
     fragmentHead,
     vertexHead,
+    varying
   ]);
 
   return (
@@ -221,24 +222,25 @@ export const Frag = new Proxy(() => null, fragHandler);
 
 // -- NOISE PROXY --
 const noise = {
-  snoise2: glsl("#pragma glslify: snoise2 = require(glsl-noise/simplex/2d)"),
-  snoise3: glsl("#pragma glslify: snoise3 = require(glsl-noise/simplex/3d)"),
-  snoise4: glsl("#pragma glslify: snoise4 = require(glsl-noise/simplex/4d)"),
-  cnoise2: glsl("#pragma glslify: cnoise2 = require(glsl-noise/classic/2d)"),
-  cnoise3: glsl("#pragma glslify: cnoise3 = require(glsl-noise/classic/3d)"),
-  cnoise4: glsl("#pragma glslify: cnoise4 = require(glsl-noise/classic/4d)"),
-  pnoise2: glsl("#pragma glslify: pnoise2 = require(glsl-noise/periodic/2d)"),
-  pnoise3: glsl("#pragma glslify: pnoise3 = require(glsl-noise/periodic/3d)"),
-  pnoise4: glsl("#pragma glslify: pnoise4 = require(glsl-noise/periodic/4d)"),
+  snoise2: "glsl-noise/simplex/2d",
+  snoise3: "glsl-noise/simplex/3d",
+  snoise4: "glsl-noise/simplex/4d",
+  cnoise2: "glsl-noise/classic/2d",
+  cnoise3: "glsl-noise/classic/3d",
+  cnoise4: "glsl-noise/classic/4d",
+  pnoise2: "glsl-noise/periodic/2d",
+  pnoise3: "glsl-noise/periodic/3d",
+  pnoise4: "glsl-noise/periodic/4d",
 }
 const noiseHandler = {
   get: function (_, name) {
     const path = noise[name]
     if (path) {
+      const pragma = `#pragma glslify: ${name} = require(${path})`
       return () =>  (
         <>
-          <VertexHead>{path}</VertexHead>
-          <FragmentHead>{path}</FragmentHead>
+          <VertexHead>{glsl(pragma)}</VertexHead>
+          <FragmentHead>{glsl(pragma)}</FragmentHead>
         </>
       )
     }
