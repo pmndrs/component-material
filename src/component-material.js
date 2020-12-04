@@ -32,8 +32,8 @@ function editShader(shader, extensions) {
 function editShaderHead(shader, head) {
   if (head && typeof head === "string") {
     shader = `
-      ${shader}
       ${head}
+      ${shader}
     `;
   }
   return shader;
@@ -47,7 +47,7 @@ function addUniforms(shader, uniforms) {
   `;
 }
 
-export const ExtendableMaterial = React.forwardRef(function ExtendableMaterial(
+export const ComponentMaterial = React.forwardRef(function ComponentMaterial(
   { children, uniforms = {}, materialType = MeshPhysicalMaterial, ...props },
   ref
 ) {
@@ -55,8 +55,6 @@ export const ExtendableMaterial = React.forwardRef(function ExtendableMaterial(
   const [vertex, setVertex] = useState({});
   const [fragmentHead, setFragmentHead] = useState();
   const [vertexHead, setVertexHead] = useState();
-
-  console.log("UPDATE", { fragment, fragmentHead });
 
   const material = useMemo(() => {
     const _material = createMaterial(materialType, uniforms, (shader) => {
@@ -71,7 +69,15 @@ export const ExtendableMaterial = React.forwardRef(function ExtendableMaterial(
       shader.vertexShader = editShader(shader.vertexShader, vertex);
     });
     return new _material();
-  }, [fragment, materialType, vertex, uniforms, fragmentHead, vertexHead]);
+  }, [
+    fragment,
+    materialType,
+    vertex,
+    uniforms,
+    fragmentHead,
+    vertexHead,
+    children,
+  ]);
 
   return (
     <Context.Provider
@@ -82,13 +88,15 @@ export const ExtendableMaterial = React.forwardRef(function ExtendableMaterial(
         setVertexHead,
       }}
     >
-      <primitive
-        ref={ref}
-        object={material}
-        attach="material"
-        {...props}
-        {...uniforms}
-      />
+      {material && (
+        <primitive
+          ref={ref}
+          object={material}
+          attach="material"
+          {...props}
+          {...uniforms}
+        />
+      )}
       {children}
     </Context.Provider>
   );
@@ -106,7 +114,7 @@ function GenericChunk({ shader, chunkName, setShader, discartChunk }) {
   return null;
 }
 
-ExtendableMaterial.Frag = function Fragment({
+function FragmentChunk({
   children,
   discartChunk = false,
   chunkName = DEFAULT_FRAG_CHUNK,
@@ -120,9 +128,9 @@ ExtendableMaterial.Frag = function Fragment({
       discartChunk={discartChunk}
     />
   );
-};
+}
 
-ExtendableMaterial.Vert = function Vertex({
+function VertexChunk({
   children,
   discartChunk = false,
   chunkName = DEFAULT_VERT_CHUNK,
@@ -136,9 +144,9 @@ ExtendableMaterial.Vert = function Vertex({
       discartChunk={discartChunk}
     />
   );
-};
+}
 
-ExtendableMaterial.FragHead = function FragmentHead({ children }) {
+function FragmentHead({ children }) {
   const { setFragmentHead } = useContext(Context);
   useEffect(() => {
     if (children && typeof children === "string") {
@@ -146,9 +154,9 @@ ExtendableMaterial.FragHead = function FragmentHead({ children }) {
     }
   }, [setFragmentHead, children]);
   return null;
-};
+}
 
-ExtendableMaterial.VertHead = function VertexHead({ children }) {
+function VertexHead({ children }) {
   const { setVertexHead } = useContext(Context);
   useEffect(() => {
     if (children && typeof children === "string") {
@@ -156,4 +164,43 @@ ExtendableMaterial.VertHead = function VertexHead({ children }) {
     }
   }, [setVertexHead, children]);
   return null;
+}
+
+const vertHandler = {
+  get: function (_, name) {
+    if (name === "head") {
+      return ({ children }) => <VertexHead>{children}</VertexHead>;
+    } else if (name === "body") {
+      return ({ children, chunkName, ...props }) => (
+        <VertexChunk {...props}>{children}</VertexChunk>
+      );
+    } else {
+      return ({ children, ...props }) => (
+        <VertexChunk {...props} chunkName={name}>
+          {children}
+        </VertexChunk>
+      );
+    }
+  },
 };
+
+const fragHandler = {
+  get: function (_, name) {
+    if (name === "head") {
+      return ({ children }) => <FragmentHead>{children}</FragmentHead>;
+    } else if (name === "body") {
+      return ({ children, chunkName, ...props }) => (
+        <FragmentChunk {...props}>{children}</FragmentChunk>
+      );
+    } else {
+      return ({ children, ...props }) => (
+        <FragmentChunk {...props} chunkName={name}>
+          {children}
+        </FragmentChunk>
+      );
+    }
+  },
+};
+
+export const Vert = new Proxy(() => null, vertHandler);
+export const Frag = new Proxy(() => null, fragHandler);
