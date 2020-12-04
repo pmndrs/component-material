@@ -1,10 +1,8 @@
-import * as THREE from "three";
 import React, { Suspense, useRef } from "react";
 import { Canvas, useFrame } from "react-three-fiber";
-import { OrbitControls, Sphere, Environment } from "@react-three/drei";
+import { Sphere, Environment } from "@react-three/drei";
 
-import { ComponentMaterial, Frag, Vert } from "./component-material";
-import { distort } from "./distort";
+import { ComponentMaterial, Frag, Noise, Vert } from "./component-material";
 import "./styles.css";
 
 function Scene() {
@@ -32,11 +30,10 @@ function Scene() {
           radiusNoiseFrequency: 1,
         }}
       >
-        <Vert.head>
-          {`
-          ${distort}
+        <Noise.snoise3 />
+        <Vert.head>{`
           float fsnoise(float val1, float val2, float val3){
-            return snoise(vec3(val1,val2,val3));
+            return snoise3(vec3(val1,val2,val3));
           }
 
           vec3 distortFunct(vec3 transformed, float factor) {
@@ -62,8 +59,7 @@ function Scene() {
             vec3 distorted2 = distortFunct(nearby2, 1.0);
             return normalize(cross(distorted1 - distortedPosition, distorted2 - distortedPosition));
           }
-        `}
-        </Vert.head>
+        `}</Vert.head>
         <Vert.body>{`
           float updateTime = time / 10.0;
           transformed = distortFunct(transformed, 1.0);
@@ -72,9 +68,9 @@ function Scene() {
           gl_Position = projectionMatrix * modelViewMatrix * vec4(transformed,1.);
         `}</Vert.body>
         <Frag.head>{`
-        float _easing(float x){
-          return x*x*x;
-        }
+          float _easing(float x){
+            return x*x*x;
+          }
         `}</Frag.head>
         <Frag.body>{`
           gl_FragColor = vec4(gl_FragColor.rgb * vec3(red, _easing(green), blue), gl_FragColor.a);  
@@ -93,7 +89,6 @@ function App() {
         <Suspense fallback={null}>
           <Environment files="rooftop_night_1k.hdr" />
         </Suspense>
-        <OrbitControls />
       </Canvas>
     </>
   );

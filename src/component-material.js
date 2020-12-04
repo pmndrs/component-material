@@ -6,13 +6,16 @@ import React, {
   useState,
 } from "react";
 import { MeshPhysicalMaterial } from "three";
-
+import glsl from "glslify";
 import createMaterial from "./createMaterial";
 
 const Context = createContext();
-
 const DEFAULT_FRAG_CHUNK = "dithering_fragment";
 const DEFAULT_VERT_CHUNK = "project_vertex";
+
+function getVarType(variable) {
+  return "float"
+}
 
 function editShader(shader, extensions) {
   Object.entries(extensions).forEach(([key, { value, discartChunk }]) => {
@@ -40,15 +43,23 @@ function editShaderHead(shader, head) {
 }
 
 function addUniforms(shader, uniforms) {
-  return `${Object.keys(uniforms)
-    .map((key) => `uniform float ${key};`)
+  return `${Object.entries(uniforms)
+    .map(([key, value]) => `uniform ${getVarType(value)} ${key};`)
+    .join(" ")}
+    ${shader}
+  `;
+}
+
+function addVarying(shader, varying) {
+  return `${Object.entries(varying)
+    .map(([key, value]) => `varying ${getVarType(value)} ${key};`)
     .join(" ")}
     ${shader}
   `;
 }
 
 export const ComponentMaterial = React.forwardRef(function ComponentMaterial(
-  { children, uniforms = {}, materialType = MeshPhysicalMaterial, ...props },
+  { children, varying={},uniforms = {}, materialType = MeshPhysicalMaterial, ...props },
   ref
 ) {
   const [fragment, setFragment] = useState({});
@@ -65,6 +76,8 @@ export const ComponentMaterial = React.forwardRef(function ComponentMaterial(
       shader.vertexShader = editShaderHead(shader.vertexShader, vertexHead);
       shader.fragmentShader = addUniforms(shader.fragmentShader, uniforms);
       shader.vertexShader = addUniforms(shader.vertexShader, uniforms);
+      shader.fragmentShader = addVarying(shader.fragmentShader, varying);
+      shader.vertexShader = addVarying(shader.vertexShader, varying);
       shader.fragmentShader = editShader(shader.fragmentShader, fragment);
       shader.vertexShader = editShader(shader.vertexShader, vertex);
     });
@@ -76,7 +89,6 @@ export const ComponentMaterial = React.forwardRef(function ComponentMaterial(
     uniforms,
     fragmentHead,
     vertexHead,
-    children,
   ]);
 
   return (
@@ -150,7 +162,7 @@ function FragmentHead({ children }) {
   const { setFragmentHead } = useContext(Context);
   useEffect(() => {
     if (children && typeof children === "string") {
-      setFragmentHead(children);
+      setFragmentHead(s => typeof s === "string" ? s.concat(children) : children);
     }
   }, [setFragmentHead, children]);
   return null;
@@ -160,12 +172,14 @@ function VertexHead({ children }) {
   const { setVertexHead } = useContext(Context);
   useEffect(() => {
     if (children && typeof children === "string") {
-      setVertexHead(children);
+      setVertexHead(s => typeof s === "string" ? s.concat(children) : children);
     }
   }, [setVertexHead, children]);
   return null;
 }
 
+
+// -- VERTEX PROXY --
 const vertHandler = {
   get: function (_, name) {
     if (name === "head") {
@@ -183,7 +197,9 @@ const vertHandler = {
     }
   },
 };
+export const Vert = new Proxy(() => null, vertHandler);
 
+// -- FRAGMENT PROXY --
 const fragHandler = {
   get: function (_, name) {
     if (name === "head") {
@@ -201,6 +217,31 @@ const fragHandler = {
     }
   },
 };
-
-export const Vert = new Proxy(() => null, vertHandler);
 export const Frag = new Proxy(() => null, fragHandler);
+
+// -- NOISE PROXY --
+const noise = {
+  snoise2: glsl("#pragma glslify: snoise2 = require(glsl-noise/simplex/2d)"),
+  snoise3: glsl("#pragma glslify: snoise3 = require(glsl-noise/simplex/3d)"),
+  snoise4: glsl("#pragma glslify: snoise4 = require(glsl-noise/simplex/4d)"),
+  cnoise2: glsl("#pragma glslify: cnoise2 = require(glsl-noise/classic/2d)"),
+  cnoise3: glsl("#pragma glslify: cnoise3 = require(glsl-noise/classic/3d)"),
+  cnoise4: glsl("#pragma glslify: cnoise4 = require(glsl-noise/classic/4d)"),
+  pnoise2: glsl("#pragma glslify: pnoise2 = require(glsl-noise/periodic/2d)"),
+  pnoise3: glsl("#pragma glslify: pnoise3 = require(glsl-noise/periodic/3d)"),
+  pnoise4: glsl("#pragma glslify: pnoise4 = require(glsl-noise/periodic/4d)"),
+}
+const noiseHandler = {
+  get: function (_, name) {
+    const path = noise[name]
+    if (path) {
+      return () =>  (
+        <>
+          <VertexHead>{path}</VertexHead>
+          <FragmentHead>{path}</FragmentHead>
+        </>
+      )
+    }
+  },
+};
+export const Noise = new Proxy(() => null, noiseHandler);
