@@ -4,11 +4,11 @@
 ComponentMaterial is a utility library for React that helps you write and modify materials in react-three-fiber and threejs.
 
 ### Quick start
-```
+```bash
 yarn add component-material
 ```
 
-```
+```jsx
 function MyMaterial(props) {
 
   return (
