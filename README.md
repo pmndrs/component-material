@@ -31,4 +31,4 @@ function MyMaterial(props) {
 #### Features
 
 - Autocomplete: Typescript lets us add a bunch useful in-editor hints
-[https://raw.githubusercontent.com/emmelleppi/component-material/master/readme/autocomplete.jpeg!](component-material autocomplete)
+![https://raw.githubusercontent.com/emmelleppi/component-material/master/readme/autocomplete.jpeg](component-material autocomplete)
