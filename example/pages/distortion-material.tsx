@@ -1,16 +1,32 @@
-import React, { Suspense, useRef } from "react";
-import { Canvas, useFrame } from "react-three-fiber";
-import { Sphere, Environment } from "@react-three/drei";
-import { useTweaks } from "use-tweaks";
+import 'react-app-polyfill/ie11';
+import React, { Suspense, useEffect, useRef } from 'react';
+import { Canvas, useFrame, useLoader, useThree } from 'react-three-fiber';
+import { Sphere, Environment } from '@react-three/drei';
+import { useTweaks } from 'use-tweaks';
+import * as THREE from "three"
+import { RGBELoader } from 'three/examples/jsm/loaders/RGBELoader'
 
-import {
-  ComponentMaterial,
-  Ease,
-  Frag,
-  Noise,
-  Vert,
-} from "./component-material";
-import "./styles.css";
+import distortion from '../simplex3d';
+import { ComponentMaterial, frag, vert } from '../../src/index';
+import hdr from "../rooftop_night_1k.hdr"
+
+function Env() {
+  const { gl, scene } = useThree()
+  const result = useLoader(RGBELoader, hdr)
+
+  useEffect(() => {
+    const gen = new THREE.PMREMGenerator(gl)
+    const texture = gen.fromEquirectangular(result).texture 
+    scene.environment = texture
+    result.dispose()
+    gen.dispose()
+    return () => {
+      scene.environment = scene.background = null
+    }
+  }, [gl, result, scene])
+
+  return null
+}
 
 function Scene() {
   const material = useRef();
@@ -35,31 +51,33 @@ function Scene() {
     radiusNoiseFrequency: { value: 1, min: 0, max: 2 },
   });
 
-  useFrame(({ clock }) => (material.current.time = clock.getElapsedTime()));
-
+  useFrame(({ clock }) => {
+    if (material.current) {
+      material.current.time = clock.getElapsedTime();
+    }
+  });
+  const RADIUS = 4
   return (
-    <Sphere args={[4, 512, 512]}>
+    <Sphere args={[RADIUS, 512, 512]}>
       <ComponentMaterial
         ref={material}
         clearcoat={clearcoat}
         metalness={metalness}
         roughness={roughness}
         uniforms={{
-          time: 0,
-          radius: 4,
-          red,
-          green,
-          blue,
-          radiusVariationAmplitude,
-          radiusNoiseFrequency,
+          radius: { value: RADIUS, type: "float" },
+          time: { value: 0, type: "float" },
+          red: { value: red, type: "float" },
+          green: { value: green, type: "float" },
+          blue: { value: blue, type: "float" },
+          radiusVariationAmplitude: { value: radiusVariationAmplitude, type: "float" },
+          radiusNoiseFrequency: { value: radiusNoiseFrequency, type: "float" },
         }}
       >
-        <Ease.quarticInOut />
-        <Noise.snoise3 />
-        <Vert.head>{
-          /*glsl*/ `
+        <vert.head>{`
+          ${distortion}
           float fsnoise(float val1, float val2, float val3){
-            return snoise3(vec3(val1,val2,val3));
+            return snoise(vec3(val1,val2,val3));
           }
 
           vec3 distortFunct(vec3 transformed, float factor) {
@@ -85,22 +103,17 @@ function Scene() {
             vec3 distorted2 = distortFunct(nearby2, 1.0);
             return normalize(cross(distorted1 - distortedPosition, distorted2 - distortedPosition));
           }
-        `
-        }</Vert.head>
-        <Vert.body>{
-          /*glsl*/ `
+        `}</vert.head>
+        <vert.body>{`
           float updateTime = time / 10.0;
           transformed = distortFunct(transformed, 1.0);
           vec3 distortedNormal = distortNormal(position, transformed, normal);
           vNormal = normal + distortedNormal;
           gl_Position = projectionMatrix * modelViewMatrix * vec4(transformed,1.);
-        `
-        }</Vert.body>
-        <Frag.body>{
-          /*glsl*/ `
+        `}</vert.body>
+        <frag.body>{`
           gl_FragColor = vec4(gl_FragColor.rgb * vec3(red, green, blue), gl_FragColor.a);  
-        `
-        }</Frag.body>
+        `}</frag.body>
       </ComponentMaterial>
     </Sphere>
   );
@@ -114,7 +127,7 @@ function App() {
         <spotLight position={[10, 10, 10]} radius={Math.PI / 3} intensity={4} />
         <Scene />
         <Suspense fallback={null}>
-          <Environment files="rooftop_night_1k.hdr" />
+          <Env />
         </Suspense>
       </Canvas>
     </>

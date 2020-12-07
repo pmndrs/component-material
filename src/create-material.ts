@@ -1,9 +1,10 @@
-import { MeshPhysicalMaterial } from "three";
+// @ts-nocheck
+import { MeshPhysicalMaterial, Material, ShaderMaterial } from 'three';
 
 function createMaterial(
-  baseMaterial = MeshPhysicalMaterial,
-  uniforms,
-  onBeforeCompile
+  baseMaterial: Material = MeshPhysicalMaterial,
+  uniforms?: any,
+  onBeforeCompile?: (shader: ShaderMaterial) => void
 ) {
   return class extends baseMaterial {
     constructor(parameters = {}) {
