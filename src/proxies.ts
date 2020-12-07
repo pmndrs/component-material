@@ -6,14 +6,22 @@ import {
 } from './constants';
 import { ProxyProps } from './types';
 
+import { fragmentChunks, vertexChunks, commonChunks } from './generated';
+
 function NullFunction() {
   return null;
 }
 
+type ShaderProxyHelper<T extends string> = {
+  [key in T]: any;
+} & {
+  body: any;
+};
+
 // -- VERTEX PROXY --
 const vertHandler = {
-  get: function (_: any, name: string) {
-    const Component = function ({ children }: ProxyProps) {
+  get: function(_: any, name: string) {
+    const Component = function({ children }: ProxyProps) {
       return children;
     };
     Object.defineProperty(Component, 'chunkName', { writable: true });
@@ -23,12 +31,15 @@ const vertHandler = {
     return Component;
   },
 };
-export const vert = new Proxy(NullFunction, vertHandler);
+export const vert: ShaderProxyHelper<vertexChunks | commonChunks> = new Proxy(
+  NullFunction,
+  vertHandler
+);
 
 // -- FRAGMENT PROXY --
 const fragHandler = {
-  get: function (_: any, name: string) {
-    const Component = function ({ children }: ProxyProps) {
+  get: function(_: any, name: string) {
+    const Component = function({ children }: ProxyProps) {
       return children;
     };
     Object.defineProperty(Component, 'chunkName', { writable: true });
@@ -38,7 +49,11 @@ const fragHandler = {
     return Component;
   },
 };
-export const frag = new Proxy(NullFunction, fragHandler);
+
+export const frag: ShaderProxyHelper<fragmentChunks | commonChunks> = new Proxy(
+  NullFunction,
+  fragHandler
+);
 
 // TODO
 // // -- NOISE PROXY --
