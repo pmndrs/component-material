@@ -78,6 +78,7 @@ export const ComponentMaterial = React.forwardRef(function ComponentMaterial(
     () =>
       React.Children.toArray(children).reduce((acc: any, child: any) => {
         const shader = child?.props?.children;
+        const discartChunk = child?.props?.discartChunk || false;
         const { toolShader, chunkName, shaderType }: ChildProps = child.type;
 
         if (typeof shader === 'string' && [VERT, FRAG].includes(shaderType)) {
@@ -92,6 +93,7 @@ export const ComponentMaterial = React.forwardRef(function ComponentMaterial(
                 discartChunk: false,
               };
             }
+            acc[shaderType][chunkName].discartChunk = discartChunk
             acc[shaderType][chunkName].value = acc[shaderType][chunkName].value
               .concat(`
                 ${shader}
