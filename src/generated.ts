@@ -125,4 +125,4 @@ export type vertexChunks =
   | 'points_vert'
   | 'shadow_vert'
   | 'sprite_vert';
-export type commonChunks = 'bsdfs' | 'common' | 'lights_pars_begin' | 'packing';
+export type commonChunks = 'head' | 'body' | 'bsdfs' | 'common' | 'lights_pars_begin' | 'packing';
