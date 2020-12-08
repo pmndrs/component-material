@@ -3,40 +3,34 @@ import React, { Suspense, useEffect, useRef } from 'react';
 import { Canvas, useFrame, useLoader, useThree } from 'react-three-fiber';
 import { Sphere } from '@react-three/drei';
 import { useTweaks } from 'use-tweaks';
-import * as THREE from "three"
-import { RGBELoader } from 'three/examples/jsm/loaders/RGBELoader'
+import * as THREE from 'three';
+import { RGBELoader } from 'three/examples/jsm/loaders/RGBELoader';
 
 import { ComponentMaterial, frag } from '../../src/index';
-import hdr from "../rooftop_night_1k.hdr"
+import hdr from '../rooftop_night_1k.hdr';
 
 function Env() {
-  const { gl, scene } = useThree()
-  const result = useLoader(RGBELoader, hdr)
+  const { gl, scene } = useThree();
+  const result = useLoader(RGBELoader, hdr);
 
   useEffect(() => {
-    const gen = new THREE.PMREMGenerator(gl)
-    const texture = gen.fromEquirectangular(result).texture 
-    scene.environment = texture
-    result.dispose()
-    gen.dispose()
+    const gen = new THREE.PMREMGenerator(gl);
+    const texture = gen.fromEquirectangular(result).texture;
+    scene.environment = texture;
+    result.dispose();
+    gen.dispose();
     return () => {
-      scene.environment = scene.background = null
-    }
-  }, [gl, result, scene])
+      scene.environment = scene.background = null;
+    };
+  }, [gl, result, scene]);
 
-  return null
+  return null;
 }
 
 function Scene() {
   const material = useRef();
 
-  const {
-    red,
-    green,
-    blue,
-    metalness,
-    roughness,
-  } = useTweaks({
+  const { red, green, blue, metalness, roughness } = useTweaks({
     red: { value: 0.5, min: 0, max: 1 },
     green: { value: 0.5, min: 0, max: 1 },
     blue: { value: 0.5, min: 0, max: 1 },
@@ -46,7 +40,7 @@ function Scene() {
 
   useFrame(({ clock }) => {
     if (material.current) {
-      material.current.time = clock.getElapsedTime()*2;
+      material.current.time = clock.getElapsedTime() * 2;
     }
   });
 
@@ -57,13 +51,13 @@ function Scene() {
         metalness={metalness}
         roughness={roughness}
         uniforms={{
-          time: { value: 0, type: "float" },
-          red: { value: red, type: "float" },
-          green: { value: green, type: "float" },
-          blue: { value: blue, type: "float" },
+          time: { value: 0, type: 'float' },
+          red: { value: red, type: 'float' },
+          green: { value: green, type: 'float' },
+          blue: { value: blue, type: 'float' },
         }}
         varyings={{
-          my_varying: { type: "float" },
+          my_varying: { type: 'float' },
         }}
       >
         <frag.head>{`

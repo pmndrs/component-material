@@ -93,7 +93,7 @@ export const ComponentMaterial = React.forwardRef(function ComponentMaterial(
                 replaceChunk: false,
               };
             }
-            acc[shaderType][chunkName].replaceChunk = replaceChunk
+            acc[shaderType][chunkName].replaceChunk = replaceChunk;
             acc[shaderType][chunkName].value = acc[shaderType][chunkName].value
               .concat(`
                 ${shader}
@@ -115,34 +115,30 @@ export const ComponentMaterial = React.forwardRef(function ComponentMaterial(
     const { head: vertHead, ...vertBody } = vert;
     const { head: fragHead, ...fragBody } = frag;
 
-    const _material = createMaterial(
-      from,
-      uniformsRef.current,
-      (shader) => {
-        shader.fragmentShader = editShaderHead(shader.fragmentShader, fragHead);
-        shader.vertexShader = editShaderHead(shader.vertexShader, vertHead);
-        shader.fragmentShader = editShaderHead(shader.fragmentShader, tool);
-        shader.vertexShader = editShaderHead(shader.vertexShader, tool);
-        shader.fragmentShader = addUniforms(
-          shader.fragmentShader,
-          uniformsRef.current
-        );
-        shader.vertexShader = addUniforms(
-          shader.vertexShader,
-          uniformsRef.current
-        );
-        shader.fragmentShader = addVarying(
-          shader.fragmentShader,
-          varyingsRef.current
-        );
-        shader.vertexShader = addVarying(
-          shader.vertexShader,
-          varyingsRef.current
-        );
-        shader.fragmentShader = editShader(shader.fragmentShader, fragBody);
-        shader.vertexShader = editShader(shader.vertexShader, vertBody);
-      }
-    );
+    const _material = createMaterial(from, uniformsRef.current, (shader) => {
+      shader.fragmentShader = editShaderHead(shader.fragmentShader, fragHead);
+      shader.vertexShader = editShaderHead(shader.vertexShader, vertHead);
+      shader.fragmentShader = editShaderHead(shader.fragmentShader, tool);
+      shader.vertexShader = editShaderHead(shader.vertexShader, tool);
+      shader.fragmentShader = addUniforms(
+        shader.fragmentShader,
+        uniformsRef.current
+      );
+      shader.vertexShader = addUniforms(
+        shader.vertexShader,
+        uniformsRef.current
+      );
+      shader.fragmentShader = addVarying(
+        shader.fragmentShader,
+        varyingsRef.current
+      );
+      shader.vertexShader = addVarying(
+        shader.vertexShader,
+        varyingsRef.current
+      );
+      shader.fragmentShader = editShader(shader.fragmentShader, fragBody);
+      shader.vertexShader = editShader(shader.vertexShader, vertBody);
+    });
     return new _material();
   }, [shaders, from]);
 

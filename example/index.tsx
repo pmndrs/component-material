@@ -3,7 +3,9 @@ import * as React from 'react';
 import * as ReactDOM from 'react-dom';
 
 const Main = React.lazy(() => import('./pages/main'));
-const DistortionMaterial = React.lazy(() => import('./pages/distortion-material'));
+const DistortionMaterial = React.lazy(() =>
+  import('./pages/distortion-material')
+);
 
 import { Switch, Route } from 'wouter';
 
