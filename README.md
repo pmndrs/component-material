@@ -49,7 +49,7 @@ If you want to extend a different material just use the `materialType` prop pass
  
 - ##### `uniforms`
 
-Uniforms used inside shaders must be defined via the `uniforms` prop as follows
+Uniforms used inside shaders can be defined via the `uniforms` prop as follows
 
 ```jsx
   	<ComponentMaterial
@@ -61,13 +61,26 @@ Uniforms used inside shaders must be defined via the `uniforms` prop as follows
 	>...</ComponentMaterial>
 ```
 
-The correspondences between glsl and javascript types can be seen [here](https://threejs.org/docs/#api/en/core/Uniform)
+This will also create setters and getters for the uniforms, allowing you to mutate them using props and effectively making the material reactive:
 
-**Note:** the variables cannot be defined twice in the same shader. So be careful not to define uniforms inside the `head` tag.
+```
+function MyMaterial({ myColorProp }) {
+   return (
+   	<ComponentMaterial 
+		uniforms={{ color: { value: myColorProp, type: "vec3" }}} 
+		color={myColorProp} // color uniform will have the value of myColorProp
+	>...</ComponentMaterial>
+   )
+}
+```
+
+**Note**
+- The correspondences between glsl and javascript types can be seen [here](https://threejs.org/docs/#api/en/core/Uniform)
+- Uniforms cannot be defined twice in the same shader. So be careful not to define the same uniforms inside the `head` tag.
 
 - ##### `varying`
 
-Varying variables can be defined directly inside the shader `head` tag or they can be passed as prop in the following way
+Varying variables can be defined directly inside the shader `head` tag or they can be declared as prop:
 
 ```jsx
   	<ComponentMaterial
@@ -79,7 +92,8 @@ Varying variables can be defined directly inside the shader `head` tag or they c
 	>...</ComponentMaterial>
 ```
 
-**Note:** the variables cannot be defined twice in the same shader, this will give a glsl error. Therefore it is not possible to define them in the `head` tag and at the same time via props.
+**Note:** 
+- As uniforms, varyings cannot be defined twice in the same shader, this will give a glsl error. So be careful not to define the same varyings inside the `head` tag.
 
 #### Features
 
