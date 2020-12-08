@@ -17,7 +17,7 @@ function MyMaterial(props) {
   return (
       <ComponentMaterial 
         {...props}
-	// ☝️ declare uniforms with the correct type
+	// 1️⃣ declare uniforms with the correct type
         uniforms={{
             r: { value: 1, type: "float" },
             g: { value: 0.5, type: "float" },
@@ -25,7 +25,7 @@ function MyMaterial(props) {
         }} 
       >
       <frag.body>{`
-        // ✌️ Access the uniforms in your shader
+        // 2️⃣ Access the uniforms in your shader
         gl_FragColor = vec4(r, g, b, 1.0);
       `}</frag.body>
     </ComponentMaterial>
