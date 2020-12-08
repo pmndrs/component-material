@@ -11,12 +11,12 @@ import {
 } from './types';
 
 function editShader(shader: string, extensions: ExtensionShaderObject) {
-  Object.entries(extensions).forEach(([key, { value, discartChunk }]) => {
+  Object.entries(extensions).forEach(([key, { value, replaceChunk }]) => {
     if (value && shader.includes(key)) {
       shader = shader.replace(
         `#include <${key}>`,
         `
-          ${discartChunk ? '' : `#include <${key}>`}
+          ${replaceChunk ? '' : `#include <${key}>`}
           ${value}
         `
       );
@@ -78,7 +78,7 @@ export const ComponentMaterial = React.forwardRef(function ComponentMaterial(
     () =>
       React.Children.toArray(children).reduce((acc: any, child: any) => {
         const shader = child?.props?.children;
-        const discartChunk = child?.props?.discartChunk || false;
+        const replaceChunk = child?.props?.replaceChunk || false;
         const { toolShader, chunkName, shaderType }: ChildProps = child.type;
 
         if (typeof shader === 'string' && [VERT, FRAG].includes(shaderType)) {
@@ -90,10 +90,10 @@ export const ComponentMaterial = React.forwardRef(function ComponentMaterial(
             if (!acc[shaderType][chunkName]) {
               acc[shaderType][chunkName] = {
                 value: '',
-                discartChunk: false,
+                replaceChunk: false,
               };
             }
-            acc[shaderType][chunkName].discartChunk = discartChunk
+            acc[shaderType][chunkName].replaceChunk = replaceChunk
             acc[shaderType][chunkName].value = acc[shaderType][chunkName].value
               .concat(`
                 ${shader}

@@ -6,7 +6,7 @@ export type ProxyProps = {
 };
 export type ExtensionsType = {
   value?: string;
-  discartChunk: boolean;
+  replaceChunk: boolean;
 };
 export type Uniform = {
   value:

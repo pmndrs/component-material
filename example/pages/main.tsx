@@ -69,7 +69,7 @@ function Scene() {
             return t < 0.5 ? p : -p + (4.0 * t) - 1.0;
           }
         `}</frag.head>
-        <frag.body discartChunk>{`
+        <frag.body>{`
           gl_FragColor = vec4(gl_FragColor.rgb * vec3(red, green, blue), quadraticInOut((sin(time)+1.0)/2.0));  
         `}</frag.body>
       </ComponentMaterial>
