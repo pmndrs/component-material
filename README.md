@@ -4,7 +4,7 @@
 
 ComponentMaterial is a utility library for React that helps you write and modify materials in react-three-fiber and threejs.
 
-### Quick start
+## Quick start
 ```bash
 yarn add component-material
 ```
@@ -36,10 +36,9 @@ function MyMaterial(props) {
 1. declare your uniforms
 2. write your fragment and vertex shader by hooking into existing shader chunks
 
-### API
-#### `<ComponentMaterial/>`
+## `<ComponentMaterial/>`
 
-- ##### `materialType`
+#### `materialType`
 By default ComponentMaterial extends three's MeshPhysicalMaterial.
 
 If you want to extend a different material just use the `materialType` prop passing the desired material constructor.
@@ -49,7 +48,7 @@ If you want to extend a different material just use the `materialType` prop pass
 ```
  
  
-- ##### `uniforms`
+#### `uniforms`
 
 Uniforms used inside shaders can be defined via the `uniforms` prop as follows
 
@@ -80,7 +79,7 @@ function MyMaterial({ myColorProp }) {
 - The correspondences between glsl and javascript types can be seen [here](https://threejs.org/docs/#api/en/core/Uniform)
 - Uniforms cannot be defined twice in the same shader. So be careful not to define the same uniforms inside the `head` tag.
 
-- ##### `varying`
+#### `varying`
 
 Varying variables can be defined directly inside the shader `head` tag or they can be declared as prop:
 
@@ -97,7 +96,7 @@ Varying variables can be defined directly inside the shader `head` tag or they c
 **Note:** 
 - As uniforms, varyings cannot be defined twice in the same shader, this will give a glsl error. So be careful not to define the same varyings inside the `head` tag.
 
-#### Features
+## Features
 
 - Autocomplete: Typescript lets us add a bunch useful in-editor hints
 ![component-material autocomplete](https://raw.githubusercontent.com/emmelleppi/component-material/master/readme/autocomplete.jpeg)
