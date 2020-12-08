@@ -1,5 +1,11 @@
 ![](https://raw.githubusercontent.com/emmelleppi/component-material/master/logo.jpg)
 
+
+[![Version](https://img.shields.io/npm/v/component-material?style=flat&colorA=000000&colorB=000000)](https://www.npmjs.com/package/component-material)
+[![Downloads](https://img.shields.io/npm/dt/component-material.svg?style=flat&colorA=000000&colorB=000000)](https://www.npmjs.com/package/component-material)
+[![Discord Shield](https://img.shields.io/discord/740090768164651008?style=flat&colorA=000000&colorB=000000&label=discord&logo=discord&logoColor=ffffff)](https://discord.gg/ZZjjNvJ)
+
+
 # Component Material
 
 ComponentMaterial is a utility library for React that helps you write and modify materials in react-three-fiber and threejs.
