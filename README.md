@@ -18,7 +18,7 @@ function MyMaterial(props) {
       <ComponentMaterial 
         {...props}
         uniforms={{
-        	r: { value: 1, type: "float" },
+            r: { value: 1, type: "float" },
             g: { value: 0.5, type: "float" },
             b: { value: 0, type: "float" }
         }} 
@@ -38,12 +38,12 @@ function MyMaterial(props) {
 #### `<ComponentMaterial/>`
 
 - ##### `materialType`
-By default ComponentMaterial implements the MeshPhysicalMaterial of three.js.
+By default ComponentMaterial extends three's MeshPhysicalMaterial.
 
-If you want to implement a different material just use the `materialType` prop passing the desired material class.
+If you want to extend a different material just use the `materialType` prop passing the desired material constructor.
 
 ```jsx
-	<ComponentMaterial ... materialType={THREE.MeshPhongMaterial} >...</ComponentMaterial>
+	<ComponentMaterial materialType={THREE.MeshPhongMaterial} >...</ComponentMaterial>
 ```
  
  
@@ -55,8 +55,8 @@ Uniforms used inside shaders must be defined via the `uniforms` prop as follows
   	<ComponentMaterial
   		...
     	uniforms={{
-        	my-uniform-1: { value: 0, type: "float" },
-            my-uniform-2: { value: [0, 1], type: "vec2" },
+            myUniform1: { value: 0, type: "float" },
+            myUniform2: { value: [0, 1], type: "vec2" }
     	}}
 	>...</ComponentMaterial>
 ```
@@ -73,13 +73,13 @@ Varying variables can be defined directly inside the shader `head` tag or they c
   	<ComponentMaterial
   		...
     	varying={{
-        	my-varying-1: { type: "float" },
-            my-varying-2: { type: "vec2" },
+            myVarying1: { type: "float" },
+            myVarying2: { type: "vec2" }
     	}}
 	>...</ComponentMaterial>
 ```
 
-**Note:** the variables cannot be defined twice in the same shader. Therefore it is not possible to define them in the `head` tag and at the same time via props.
+**Note:** the variables cannot be defined twice in the same shader, this will give a glsl error. Therefore it is not possible to define them in the `head` tag and at the same time via props.
 
 #### Features
 
