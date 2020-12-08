@@ -154,12 +154,12 @@ If we wanted to insert some code just after the `emissivemap_fragment` chunk ([h
 
 <br />
 
-#### `discartChunk`
-The `discartChunk` prop is a boolean that allows you to completely replace the chosen chunk, so instead of append the custom shader code after the chunk it will be replaced directly.
+#### `replaceChunk`
+The `replaceChunk` prop is a boolean that allows you to completely replace the chosen chunk, so instead of append the custom shader code after the chunk it will be replaced directly.
 
 Taking the previous example:
 ```jsx
-  <frag.emissivemap_fragment discartChunk >{`
+  <frag.emissivemap_fragment replaceChunk >{`
     my custom shader which will replace all the chunk related to emissivemap_fragment
   `}</frag.emissivemap_fragment>
 ```
