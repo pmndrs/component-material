@@ -62,6 +62,9 @@ function Scene() {
           green: { value: green, type: "float" },
           blue: { value: blue, type: "float" },
         }}
+        varyings={{
+          my_varying: { type: "float" },
+        }}
       >
         <frag.head>{`
           float quadraticInOut(float t) {

@@ -54,16 +54,16 @@ function addVarying(shader: string, varying: Uniforms) {
 export const ComponentMaterial = React.forwardRef(function ComponentMaterial(
   {
     children,
-    varying = {},
+    varyings = {},
     uniforms = {},
     // @ts-ignore
-    materialType = MeshPhysicalMaterial,
+    from = MeshPhysicalMaterial,
     ...props
   }: ComponentMaterialProps,
   ref
 ): any {
   const uniformsRef = useRef(uniforms);
-  const varyingRef = useRef(varying);
+  const varyingsRef = useRef(varyings);
 
   const _uniforms = useMemo(
     () =>
@@ -116,7 +116,7 @@ export const ComponentMaterial = React.forwardRef(function ComponentMaterial(
     const { head: fragHead, ...fragBody } = frag;
 
     const _material = createMaterial(
-      materialType,
+      from,
       uniformsRef.current,
       (shader) => {
         shader.fragmentShader = editShaderHead(shader.fragmentShader, fragHead);
@@ -133,18 +133,18 @@ export const ComponentMaterial = React.forwardRef(function ComponentMaterial(
         );
         shader.fragmentShader = addVarying(
           shader.fragmentShader,
-          varyingRef.current
+          varyingsRef.current
         );
         shader.vertexShader = addVarying(
           shader.vertexShader,
-          varyingRef.current
+          varyingsRef.current
         );
         shader.fragmentShader = editShader(shader.fragmentShader, fragBody);
         shader.vertexShader = editShader(shader.vertexShader, vertBody);
       }
     );
     return new _material();
-  }, [shaders, materialType]);
+  }, [shaders, from]);
 
   return (
     <primitive

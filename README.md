@@ -42,13 +42,13 @@ function MyMaterial(props) {
 
 ## `<ComponentMaterial/>`
 
-#### `materialType`
+#### `from`
 By default ComponentMaterial extends three's MeshPhysicalMaterial.
 
-If you want to extend a different material just use the `materialType` prop passing the desired material constructor.
+If you want to extend a different material just use the `from` prop passing the desired material constructor.
 
 ```jsx
-   <ComponentMaterial materialType={THREE.MeshPhongMaterial} >...</ComponentMaterial>
+   <ComponentMaterial from={THREE.MeshPhongMaterial} >...</ComponentMaterial>
 ```
 <br/>
  
@@ -85,14 +85,14 @@ function MyMaterial({ myColorProp }) {
 
 <br/>
 
-#### `varying`
+#### `varyings`
 
 Varying variables can be defined directly inside the shader `head` tag or they can be declared as prop:
 
 ```jsx
   	<ComponentMaterial
 	  ...
-	  varying={{
+	  varyings={{
 	    myVarying1: { type: "float" },
 	    myVarying2: { type: "vec2" }
 	  }}

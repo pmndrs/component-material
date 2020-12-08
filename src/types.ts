@@ -32,9 +32,9 @@ export interface GenericMaterial extends Material {
   [key: string]: any;
 }
 export type ComponentMaterialProps = MaterialProps & {
-  varying: Uniforms;
+  varyings: Uniforms;
   uniforms: Uniforms;
-  materialType: GenericMaterial;
+  from: GenericMaterial;
 };
 export type ChildProps = {
   chunkName: string;
