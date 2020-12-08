@@ -9,6 +9,9 @@
 # Component Material
 
 ComponentMaterial is a utility library for React that helps you write and modify materials in react-three-fiber and threejs.
+
+[**Codesandbox example**](https://codesandbox.io/embed/component-material-example-p4cly?fontsize=14&hidenavigation=1&theme=dark)
+
 <br/>
 <br/>
 
