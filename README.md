@@ -17,6 +17,7 @@ function MyMaterial(props) {
   return (
       <ComponentMaterial 
         {...props}
+	// ☝️ declare uniforms with the correct type
         uniforms={{
             r: { value: 1, type: "float" },
             g: { value: 0.5, type: "float" },
@@ -24,6 +25,7 @@ function MyMaterial(props) {
         }} 
       >
       <frag.body>{`
+        // ✌️ Access the uniforms in your shader
         gl_FragColor = vec4(r, g, b, 1.0);
       `}</frag.body>
     </ComponentMaterial>
@@ -43,7 +45,7 @@ By default ComponentMaterial extends three's MeshPhysicalMaterial.
 If you want to extend a different material just use the `materialType` prop passing the desired material constructor.
 
 ```jsx
-	<ComponentMaterial materialType={THREE.MeshPhongMaterial} >...</ComponentMaterial>
+   <ComponentMaterial materialType={THREE.MeshPhongMaterial} >...</ComponentMaterial>
 ```
  
  
