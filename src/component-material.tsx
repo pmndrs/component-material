@@ -93,7 +93,7 @@ export const ComponentMaterial = React.forwardRef(function ComponentMaterial(
                 replaceChunk: false,
               };
             }
-            acc[shaderType][chunkName].replaceChunk = replaceChunk
+            acc[shaderType][chunkName].replaceChunk = replaceChunk;
             acc[shaderType][chunkName].value = acc[shaderType][chunkName].value
               .concat(`
                 ${shader}
@@ -118,7 +118,7 @@ export const ComponentMaterial = React.forwardRef(function ComponentMaterial(
     const _material = createMaterial(
       materialType,
       uniformsRef.current,
-      (shader) => {
+      shader => {
         shader.fragmentShader = editShaderHead(shader.fragmentShader, fragHead);
         shader.vertexShader = editShaderHead(shader.vertexShader, vertHead);
         shader.fragmentShader = editShaderHead(shader.fragmentShader, tool);

@@ -17,17 +17,17 @@ function createMaterial(
 
         Object.defineProperty(this, name, {
           get: () => this[`_${name}`].value,
-          set: (v) => (this[`_${name}`].value = v),
+          set: v => (this[`_${name}`].value = v),
         });
       });
     }
 
     onBeforeCompile(shader) {
       const handler = {
-        get: function (target, name) {
+        get: function(target, name) {
           return target[name];
         },
-        set: function (obj, prop, value) {
+        set: function(obj, prop, value) {
           obj[prop] = value;
           return obj;
         },

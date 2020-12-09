@@ -4,6 +4,7 @@ import * as ReactDOM from 'react-dom';
 
 const Main = React.lazy(() => import('./pages/main'));
 const DistortionMaterial = React.lazy(() => import('./pages/distortion-material'));
+const Voronoi = React.lazy(() => import('./pages/voronoi'));
 
 import { Switch, Route } from 'wouter';
 
@@ -15,6 +16,7 @@ function App() {
       <Switch>
         <Route path="/">{() => <Main />}</Route>
         <Route path="/distortion">{() => <DistortionMaterial />}</Route>
+        <Route path="/voronoi">{() => <Voronoi />}</Route>
       </Switch>
     </React.Suspense>
   );

@@ -1,5 +1,5 @@
 import 'react-app-polyfill/ie11';
-import React, { Suspense, useEffect, useRef } from 'react';
+import { Suspense, useEffect, useRef } from 'react';
 import { Canvas, useFrame, useLoader, useThree } from 'react-three-fiber';
 import { Sphere } from '@react-three/drei';
 import { useTweaks } from 'use-tweaks';
@@ -63,13 +63,13 @@ function Scene() {
           blue: { value: blue, type: "float" },
         }}
       >
-        <frag.head>{`
+        <frag.head>{/*glsl*/`
           float quadraticInOut(float t) {
             float p = 2.0 * t * t;
             return t < 0.5 ? p : -p + (4.0 * t) - 1.0;
           }
         `}</frag.head>
-        <frag.body>{`
+        <frag.body>{/*glsl*/`
           gl_FragColor = vec4(gl_FragColor.rgb * vec3(red, green, blue), quadraticInOut((sin(time)+1.0)/2.0));  
         `}</frag.body>
       </ComponentMaterial>

@@ -1,14 +1,14 @@
 import 'react-app-polyfill/ie11';
 import React, { Suspense, useEffect, useRef } from 'react';
 import { Canvas, useFrame, useLoader, useThree } from 'react-three-fiber';
-import { Sphere, Environment } from '@react-three/drei';
+import { Sphere } from '@react-three/drei';
 import { useTweaks } from 'use-tweaks';
 import * as THREE from "three"
 import { RGBELoader } from 'three/examples/jsm/loaders/RGBELoader'
 
 import distortion from '../simplex3d';
-import { ComponentMaterial, frag, vert } from '../../src/index';
-import hdr from "../rooftop_night_1k.hdr"
+import { ComponentMaterial, vert } from '../../src/index';
+import hdr from "../studio_small_04_1k.hdr"
 
 function Env() {
   const { gl, scene } = useThree()
@@ -32,23 +32,17 @@ function Scene() {
   const material = useRef();
 
   const {
-    red,
-    green,
-    blue,
     metalness,
     clearcoat,
     roughness,
     radiusVariationAmplitude,
     radiusNoiseFrequency,
   } = useTweaks({
-    red: { value: 0.5, min: 0, max: 1 },
-    green: { value: 0.5, min: 0, max: 1 },
-    blue: { value: 0.5, min: 0, max: 1 },
-    metalness: { value: 0.5, min: 0, max: 1 },
-    clearcoat: { value: 0.5, min: 0, max: 1 },
+    metalness: { value: 1., min: 0, max: 1 },
+    clearcoat: { value: 0.6, min: 0, max: 1 },
     roughness: { value: 0.5, min: 0, max: 1 },
-    radiusVariationAmplitude: { value: 1, min: 0, max: 5 },
-    radiusNoiseFrequency: { value: 1, min: 0, max: 2 },
+    radiusVariationAmplitude: { value: 1.25, min: 0, max: 5 },
+    radiusNoiseFrequency: { value: 0.2, min: 0, max: 2 },
   });
 
   useFrame(({ clock }) => {
@@ -56,7 +50,9 @@ function Scene() {
       material.current.time = clock.getElapsedTime();
     }
   });
+  
   const RADIUS = 4
+
   return (
     <Sphere args={[RADIUS, 512, 512]}>
       <ComponentMaterial
@@ -64,18 +60,17 @@ function Scene() {
         clearcoat={clearcoat}
         metalness={metalness}
         roughness={roughness}
+        color="black"
         uniforms={{
           radius: { value: RADIUS, type: "float" },
           time: { value: 0, type: "float" },
-          red: { value: red, type: "float" },
-          green: { value: green, type: "float" },
-          blue: { value: blue, type: "float" },
           radiusVariationAmplitude: { value: radiusVariationAmplitude, type: "float" },
           radiusNoiseFrequency: { value: radiusNoiseFrequency, type: "float" },
         }}
       >
-        <vert.head>{`
+        <vert.head>{/*glsl*/`
           ${distortion}
+          
           float fsnoise(float val1, float val2, float val3){
             return snoise(vec3(val1,val2,val3));
           }
@@ -104,16 +99,13 @@ function Scene() {
             return normalize(cross(distorted1 - distortedPosition, distorted2 - distortedPosition));
           }
         `}</vert.head>
-        <vert.body>{`
+        <vert.body>{/*glsl*/`
           float updateTime = time / 10.0;
           transformed = distortFunct(transformed, 1.0);
           vec3 distortedNormal = distortNormal(position, transformed, normal);
           vNormal = normal + distortedNormal;
           gl_Position = projectionMatrix * modelViewMatrix * vec4(transformed,1.);
         `}</vert.body>
-        <frag.body>{`
-          gl_FragColor = vec4(gl_FragColor.rgb * vec3(red, green, blue), gl_FragColor.a);  
-        `}</frag.body>
       </ComponentMaterial>
     </Sphere>
   );
@@ -123,8 +115,10 @@ function App() {
   return (
     <>
       <Canvas camera={{ position: [0, 0, 10] }}>
+        <color args={["#000"]} attach="background" />
         <ambientLight intensity={0.2} />
-        <spotLight position={[10, 10, 10]} radius={Math.PI / 3} intensity={4} />
+        <directionalLight position={[3, 3, -3]} intensity={4} />
+        <directionalLight position={[-10, 10, -10]} intensity={1} />
         <Scene />
         <Suspense fallback={null}>
           <Env />
