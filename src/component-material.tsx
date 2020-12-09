@@ -1,6 +1,6 @@
 import React, { useMemo, useRef } from 'react';
 import { MeshPhysicalMaterial } from 'three';
-import { DEFAULT_STATE, FRAG, TOOL, VERT } from './constants';
+import { DEFAULT_STATE, FRAG, VERT, COMMON } from './constants';
 import createMaterial from './create-material';
 import {
   ChildProps,
@@ -78,48 +78,63 @@ export const ComponentMaterial = React.forwardRef(function ComponentMaterial(
     () =>
       React.Children.toArray(children).reduce((acc: any, child: any) => {
         const shader = child?.props?.children;
-        const replaceChunk = child?.props?.replaceChunk || false;
-        const { toolShader, chunkName, shaderType }: ChildProps = child.type;
-
-        if (typeof shader === 'string' && [VERT, FRAG].includes(shaderType)) {
-          if (chunkName === 'head') {
-            acc[shaderType].head = acc[shaderType].head.concat(`
+        
+        if (typeof shader === 'string') {
+          
+          if (typeof child.type === "string" && child.type === COMMON) {
+            acc.common = acc.common.concat(`
               ${shader}
             `);
+
           } else {
-            if (!acc[shaderType][chunkName]) {
-              acc[shaderType][chunkName] = {
-                value: '',
-                replaceChunk: false,
-              };
+            
+            const replaceChunk = child?.props?.replaceChunk || false;
+            const { chunkName, shaderType }: ChildProps = child.type;
+  
+            if ([VERT, FRAG].includes(shaderType)) {
+
+              if (chunkName === 'head') {
+              
+                acc[shaderType].head = acc[shaderType].head.concat(`
+                  ${shader}
+                `);
+
+              } else {
+                
+                if (!acc[shaderType][chunkName]) {
+                  acc[shaderType][chunkName] = {
+                    value: '',
+                    replaceChunk: false,
+                  };
+                }
+                
+                acc[shaderType][chunkName].replaceChunk = replaceChunk;
+                acc[shaderType][chunkName].value = acc[shaderType][chunkName].value
+                  .concat(`
+                    ${shader}
+                  `);
+
+              }
             }
-            acc[shaderType][chunkName].replaceChunk = replaceChunk;
-            acc[shaderType][chunkName].value = acc[shaderType][chunkName].value
-              .concat(`
-                ${shader}
-              `);
+
           }
         }
-        if (shaderType === TOOL) {
-          acc[shaderType] = acc[shaderType].concat(`
-            ${toolShader}
-          `);
-        }
+
         return acc;
       }, DEFAULT_STATE),
     [children]
   );
 
   const material = useMemo(() => {
-    const { vert, frag, tool } = shaders;
+    const { vert, frag, common } = shaders;
     const { head: vertHead, ...vertBody } = vert;
     const { head: fragHead, ...fragBody } = frag;
 
     const _material = createMaterial(from, uniformsRef.current, shader => {
       shader.fragmentShader = editShaderHead(shader.fragmentShader, fragHead);
       shader.vertexShader = editShaderHead(shader.vertexShader, vertHead);
-      shader.fragmentShader = editShaderHead(shader.fragmentShader, tool);
-      shader.vertexShader = editShaderHead(shader.vertexShader, tool);
+      shader.fragmentShader = editShaderHead(shader.fragmentShader, common);
+      shader.vertexShader = editShaderHead(shader.vertexShader, common);
       shader.fragmentShader = addUniforms(
         shader.fragmentShader,
         uniformsRef.current

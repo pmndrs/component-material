@@ -1,3 +1,4 @@
+import React from "react"
 import {
   DEFAULT_FRAG_CHUNK,
   DEFAULT_VERT_CHUNK,
@@ -54,6 +55,10 @@ export const frag: ShaderProxyHelper<fragmentChunks | commonChunks> = new Proxy(
   NullFunction,
   fragHandler
 );
+
+export function common({ children }: ProxyProps) {
+  return <>{children}</>
+}
 
 // TODO
 // // -- NOISE PROXY --

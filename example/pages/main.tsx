@@ -6,7 +6,7 @@ import { useTweaks } from 'use-tweaks';
 import * as THREE from 'three';
 import { RGBELoader } from 'three/examples/jsm/loaders/RGBELoader';
 
-import { ComponentMaterial, frag } from '../../src/index';
+import { common, ComponentMaterial, frag } from '../../src/index';
 import hdr from "../studio_small_04_1k.hdr"
 
 function Env() {

@@ -39,7 +39,6 @@ export type ComponentMaterialProps = MaterialProps & {
 export type ChildProps = {
   chunkName: string;
   shaderType: string;
-  toolShader?: string;
 };
 export type ExtensionShaderObject = {
   [key: string]: ExtensionsType;
@@ -47,5 +46,5 @@ export type ExtensionShaderObject = {
 export type ExtensionShadersObject = {
   vert: ExtensionShaderObject & { head: string };
   frag: ExtensionShaderObject & { head: string };
-  tool: string;
+  common: string;
 };
