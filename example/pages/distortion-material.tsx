@@ -113,18 +113,16 @@ function Scene() {
 
 function App() {
   return (
-    <>
-      <Canvas camera={{ position: [0, 0, 10] }}>
-        <color args={["#000"]} attach="background" />
-        <ambientLight intensity={0.2} />
-        <directionalLight position={[3, 3, -3]} intensity={4} />
-        <directionalLight position={[-10, 10, -10]} intensity={1} />
-        <Scene />
-        <Suspense fallback={null}>
-          <Env />
-        </Suspense>
-      </Canvas>
-    </>
+    <Canvas camera={{ position: [0, 0, 10] }}>
+      <color args={["#000"]} attach="background" />
+      <ambientLight intensity={0.2} />
+      <directionalLight position={[3, 3, -3]} intensity={4} />
+      <directionalLight position={[-10, 10, -10]} intensity={1} />
+      <Scene />
+      <Suspense fallback={null}>
+        <Env />
+      </Suspense>
+    </Canvas>
   );
 }
 

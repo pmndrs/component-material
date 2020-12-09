@@ -8,7 +8,6 @@ import { RGBELoader } from 'three/examples/jsm/loaders/RGBELoader'
 
 import { ComponentMaterial, frag, vert } from '../../src/index';
 import hdr from "../studio_small_04_1k.hdr"
-
 import voronoi from '../voronoi'
 
 function Env() {
@@ -75,14 +74,12 @@ function Scene(): JSX.Element {
           amplitude: { value: amplitude, type: "float" },
           frequency: { value: frequency, type: "float" },
         }}
-
-        color="red"
+        varyings={{ vTransformed : { type: "vec3" }}}
+        color="white"
 
       >
         <vert.head>
           {/*glsl*/`
-            varying vec3 vTransformed;
-          
             ${voronoi}
 
             vec3 distortFunct(vec3 transformed, float factor) {
@@ -118,21 +115,17 @@ function Scene(): JSX.Element {
             
             vNormal = normal + distortedNormal;
             gl_Position = projectionMatrix * modelViewMatrix * vec4(transformed,1.);
-            
           `}
         </vert.body>
         <frag.head>
             {/*glsl*/`
               ${voronoi}
 
-              varying vec3 vTransformed;
-              
               vec3 distortFunct(vec3 transformed, float factor) {
                 vec2 f = worley(transformed.xyz * frequency + time * 0.1, jitter, false) * amplitude * factor;
                 return normalize(transformed) * (f.x + radius);
               }
             `}
-            
         </frag.head>
       </ComponentMaterial>
     </Sphere>
@@ -141,17 +134,13 @@ function Scene(): JSX.Element {
 
 function App() {
   return (
-    <>
-      <Canvas camera={{ position: [0, 0, 10] }}>
+    <Canvas camera={{ position: [0, 0, 10] }}>
       <color args={["#000"]} attach="background" />
-        
-        <directionalLight position={[0, 0, 10]} intensity={0.4} />
-        <spotLight position={[8, 8, -8]} radius={Math.PI} color="purple" intensity={1} />
-        <spotLight position={[0, 8, 4]} radius={Math.PI} color="purple" intensity={.4} />
-        <Scene />
-        
-      </Canvas>
-    </>
+      <directionalLight position={[0, 0, 10]} intensity={0.4} />
+      <spotLight position={[8, 8, -8]} radius={Math.PI}  intensity={1} />
+      <spotLight position={[0, 8, 4]} radius={Math.PI}  intensity={.4} />
+      <Scene />
+    </Canvas>
   );
 }
 
