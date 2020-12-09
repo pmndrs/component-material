@@ -46,11 +46,11 @@ function Scene(): JSX.Element {
     metalness,
     roughness,
   } = useTweaks({
-    metalness: { value: 1, min: 0, max: 1 },
-    roughness: { value: 0.43, min: 0, max: 1 },
-    amplitude: { value: .54, min: -5, max: 5 },
-    frequency: { value: .41, min: 0, max: 2 },
-    jitter: { value: 1.24, min: 0, max: 2 },
+    metalness: { value: 1., min: 0, max: 1 },
+    roughness: { value: 1., min: 0, max: 1 },
+    amplitude: { value: 1., min: -5, max: 5 },
+    frequency: { value: .85, min: 0, max: 10 },
+    jitter: { value: .9, min: 0, max: 2 },
   });
 
   useFrame(({ clock }) => {
@@ -83,7 +83,8 @@ function Scene(): JSX.Element {
             ${voronoi}
 
             vec3 distortFunct(vec3 transformed, float factor) {
-              vec2 f = worley(transformed.xyz * frequency + time * 0.1, jitter, false) * amplitude * factor;
+              vec3 deformed = transformed.xyz * vec3(1., 7., 3.);
+              vec2 f = worley(deformed * frequency * 0.1 + time * 0.4, jitter, false) * amplitude * factor;
               return normalize(transformed) * (f.x + radius);
             }
 
@@ -117,16 +118,6 @@ function Scene(): JSX.Element {
             gl_Position = projectionMatrix * modelViewMatrix * vec4(transformed,1.);
           `}
         </vert.body>
-        <frag.head>
-            {/*glsl*/`
-              ${voronoi}
-
-              vec3 distortFunct(vec3 transformed, float factor) {
-                vec2 f = worley(transformed.xyz * frequency + time * 0.1, jitter, false) * amplitude * factor;
-                return normalize(transformed) * (f.x + radius);
-              }
-            `}
-        </frag.head>
       </ComponentMaterial>
     </Sphere>
   );
@@ -138,8 +129,12 @@ function App() {
       <color args={["#000"]} attach="background" />
       <directionalLight position={[0, 0, 10]} intensity={0.4} />
       <spotLight position={[8, 8, -8]} radius={Math.PI}  intensity={1} />
-      <spotLight position={[0, 8, 4]} radius={Math.PI}  intensity={.4} />
+      <spotLight position={[-4, 8, 4]} color="blue" radius={Math.PI}  intensity={.4} />
+      <directionalLight position={[4, -8, 0]} color="red" intensity={.4} />
       <Scene />
+      <Suspense fallback={null}>
+      <Env />
+      </Suspense>
     </Canvas>
   );
 }
