@@ -13,7 +13,8 @@ ComponentMaterial is a utility library for React that helps you write and modify
 ### Examples
 
 <p align="center">
-  <a href="https://codesandbox.io/embed/component-material-example-p4cly?fontsize=14&hidenavigation=1&theme=dark"><img width="274" src="https://raw.githubusercontent.com/emmelleppi/component-material/master/readme/example.png" /></a>
+  <a href="https://codesandbox.io/embed/component-material-distortion-example-p4cly?fontsize=14&hidenavigation=1&theme=dark"><img width="274" src="https://raw.githubusercontent.com/emmelleppi/component-material/master/readme/distortion.jpg" /></a>
+  <a href="https://codesandbox.io/embed/component-material-voronoi-example-cuq2n?fontsize=14&hidenavigation=1&theme=dark"><img width="274" src="https://raw.githubusercontent.com/emmelleppi/component-material/master/readme/voronoi.jpg" /></a>
 </p>
 
 <br/>
