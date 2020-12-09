@@ -3,29 +3,29 @@ import React, { Suspense, useEffect, useRef } from 'react';
 import { Canvas, useFrame, useLoader, useThree } from 'react-three-fiber';
 import { Sphere } from '@react-three/drei';
 import { useTweaks } from 'use-tweaks';
-import * as THREE from "three"
-import { RGBELoader } from 'three/examples/jsm/loaders/RGBELoader'
+import * as THREE from 'three';
+import { RGBELoader } from 'three/examples/jsm/loaders/RGBELoader';
 
 import distortion from '../simplex3d';
 import { ComponentMaterial, vert } from '../../src/index';
 import hdr from "../studio_small_04_1k.hdr"
 
 function Env() {
-  const { gl, scene } = useThree()
-  const result = useLoader(RGBELoader, hdr)
+  const { gl, scene } = useThree();
+  const result = useLoader(RGBELoader, hdr);
 
   useEffect(() => {
-    const gen = new THREE.PMREMGenerator(gl)
-    const texture = gen.fromEquirectangular(result).texture 
-    scene.environment = texture
-    result.dispose()
-    gen.dispose()
+    const gen = new THREE.PMREMGenerator(gl);
+    const texture = gen.fromEquirectangular(result).texture;
+    scene.environment = texture;
+    result.dispose();
+    gen.dispose();
     return () => {
-      scene.environment = scene.background = null
-    }
-  }, [gl, result, scene])
+      scene.environment = scene.background = null;
+    };
+  }, [gl, result, scene]);
 
-  return null
+  return null;
 }
 
 function Scene() {

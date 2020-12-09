@@ -1,8 +1,21 @@
 ![](https://raw.githubusercontent.com/emmelleppi/component-material/master/logo.jpg)
 
+
+[![Version](https://img.shields.io/npm/v/component-material?style=flat&colorA=000000&colorB=000000)](https://www.npmjs.com/package/component-material)
+[![Downloads](https://img.shields.io/npm/dt/component-material.svg?style=flat&colorA=000000&colorB=000000)](https://www.npmjs.com/package/component-material)
+[![Discord Shield](https://img.shields.io/discord/740090768164651008?style=flat&colorA=000000&colorB=000000&label=discord&logo=discord&logoColor=ffffff)](https://discord.gg/ZZjjNvJ)
+
+
 # Component Material
 
 ComponentMaterial is a utility library for React that helps you write and modify materials in react-three-fiber and threejs.
+
+### Examples
+
+<p align="center">
+  <a href="https://codesandbox.io/embed/component-material-example-p4cly?fontsize=14&hidenavigation=1&theme=dark"><img width="274" src="https://raw.githubusercontent.com/emmelleppi/component-material/master/readme/example.png" /></a>
+</p>
+
 <br/>
 <br/>
 
@@ -42,13 +55,13 @@ function MyMaterial(props) {
 
 ## `<ComponentMaterial/>`
 
-#### `materialType`
+#### `from`
 By default ComponentMaterial extends three's MeshPhysicalMaterial.
 
-If you want to extend a different material just use the `materialType` prop passing the desired material constructor.
+If you want to extend a different material just use the `from` prop passing the desired material constructor.
 
 ```jsx
-   <ComponentMaterial materialType={THREE.MeshPhongMaterial} >...</ComponentMaterial>
+   <ComponentMaterial from={THREE.MeshPhongMaterial} >...</ComponentMaterial>
 ```
 <br/>
  
@@ -85,14 +98,14 @@ function MyMaterial({ myColorProp }) {
 
 <br/>
 
-#### `varying`
+#### `varyings`
 
 Varying variables can be defined directly inside the shader `head` tag or they can be declared as prop:
 
 ```jsx
   	<ComponentMaterial
 	  ...
-	  varying={{
+	  varyings={{
 	    myVarying1: { type: "float" },
 	    myVarying2: { type: "vec2" }
 	  }}
