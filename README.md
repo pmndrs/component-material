@@ -8,7 +8,7 @@
 
 # Component Material
 
-ComponentMaterial is a utility library for React that helps you write and modify materials in react-three-fiber and threejs.
+ComponentMaterial is a React utility that helps you compose and modify materials in react-three-fiber and threejs.
 
 ### Examples
 
