@@ -108,7 +108,15 @@ Varying variables can be defined directly inside the shader `head` tag or they c
 	>...</ComponentMaterial>
 ```
 
+This is equivalent to adding this code to both your vertex and fragment shaders heads:
+
+```glsl
+  float myVarying1;
+  vec2 myVarying2;
+```
+
 **Note:** 
+- Varyings don't have an initial value, only a type definition
 - As uniforms, varyings cannot be defined twice in the same shader, this will give a glsl error. So be careful not to define the same varyings inside the `head` tag.
 
 ## `<frag />` & `<vert />`
