@@ -1,12 +1,12 @@
 import 'react-app-polyfill/ie11'
 import React, { Suspense, useEffect, useRef } from 'react'
 import { Canvas, useFrame, useLoader, useThree } from 'react-three-fiber'
-import { OrbitControls, Sphere } from '@react-three/drei'
+import { Sphere } from '@react-three/drei'
 import { useTweaks } from 'use-tweaks'
 import * as THREE from 'three'
 import { RGBELoader } from 'three/examples/jsm/loaders/RGBELoader'
 
-import { ComponentMaterial, frag, vert } from '../../src/index'
+import M from '../../src/index'
 import hdr from '../studio_small_04_1k.hdr'
 import voronoi from '../voronoi'
 
@@ -26,13 +26,6 @@ function Env() {
   }, [gl, result, scene])
 
   return null
-}
-
-type Uniforms = {
-  time: any
-  red: any
-  green: any
-  blue: any
 }
 
 function Scene(): JSX.Element {
@@ -57,7 +50,7 @@ function Scene(): JSX.Element {
 
   return (
     <Sphere args={[4, 512, 512]} ref={sphere}>
-      <ComponentMaterial<Uniforms>
+      <M
         ref={material}
         roughness={roughness}
         metalness={metalness}
@@ -70,7 +63,7 @@ function Scene(): JSX.Element {
         }}
         varyings={{ vTransformed: { type: 'vec3' } }}
         color="white">
-        <vert.head>
+        <M.vert.head>
           {/*glsl*/ `
             ${voronoi}
 
@@ -95,8 +88,8 @@ function Scene(): JSX.Element {
               return normalize(cross(distorted1 - distortedPosition, distorted2 - distortedPosition));
             }
           `}
-        </vert.head>
-        <vert.body>
+        </M.vert.head>
+        <M.vert.body>
           {/*glsl*/ `
             float updateTime = time / 10.0;
             
@@ -109,8 +102,8 @@ function Scene(): JSX.Element {
             vNormal = normal + distortedNormal;
             gl_Position = projectionMatrix * modelViewMatrix * vec4(transformed,1.);
           `}
-        </vert.body>
-      </ComponentMaterial>
+        </M.vert.body>
+      </M>
     </Sphere>
   )
 }
