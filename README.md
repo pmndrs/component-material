@@ -56,7 +56,7 @@ function Sphere() {
 - Compose your shader code with modular injects
 - Auto-completion, intellisense and typechecking
   ![component-material autocomplete](https://raw.githubusercontent.com/emmelleppi/component-material/master/readme/autocomplete.jpg)
-- Syntax Highlighting with either tagged glsl templates [glsl-literal](https://marketplace.visualstudio.com/items?itemName=boyswan.glsl-literal) or [comment-tagged-templates](https://marketplace.visualstudio.com/items?itemName=bierner.comment-tagged-templates).
+- Syntax-highlighting with either [tagged glsl-literals](https://marketplace.visualstudio.com/items?itemName=boyswan.glsl-literal) or [comment-tagged templates](https://marketplace.visualstudio.com/items?itemName=bierner.comment-tagged-templates).
 - Glslify and imports via [babel-plugin-glsl](https://github.com/onnovisser/babel-plugin-glsl)
   ![glslify](https://raw.githubusercontent.com/pmndrs/component-material/master/readme/glslify.jpg)
 
@@ -64,9 +64,7 @@ function Sphere() {
 
 #### `from`
 
-By default ComponentMaterial extends three's MeshPhysicalMaterial.
-
-If you want to extend a different material just use the `from` prop passing the desired material constructor.
+By default ComponentMaterial extends three's MeshPhysicalMaterial. If you want to extend a different material just use the `from` prop passing the desired material constructor.
 
 ```jsx
 <ComponentMaterial from={THREE.MeshPhongMaterial} />
@@ -85,7 +83,7 @@ Uniforms used inside shaders can be defined via the `uniforms` prop as follows
 />
 ```
 
-This will also create setters and getters for the uniforms, allowing you to mutate them using props and effectively making the material reactive:
+This will also create setters and getters for the uniforms automatically, allowing you to mutate them using props and effectively making the material reactive:
 
 ```jsx
 function CustomMaterial({ color }) {
@@ -95,8 +93,6 @@ function CustomMaterial({ color }) {
       color={color} // color uniform will have the value of the color prop
     />
 ```
-
-**Note**
 
 - The correspondences between glsl and javascript types can be seen [here](https://threejs.org/docs/#api/en/core/Uniform)
 - Uniforms cannot be defined twice in the same shader. So be careful not to define the same uniforms inside the `head` tag.
@@ -121,15 +117,12 @@ float myVarying1;
 vec2 myVarying2;
 ```
 
-**Note:**
-
 - Varyings don't have an initial value, only a type definition
 - As uniforms, varyings cannot be defined twice in the same shader, this will give a glsl error. So be careful not to define the same varyings inside the `head` tag.
 
 ## `<frag />` & `<vert />`
 
-The `frag` and `vert` tags have the function of injecting the shader text, passed as children, into the preconfigured shader of the threejs material.
-Let's see what it means with an example:
+The `frag` and `vert` tags have the function of injecting the shader text, passed as children, into the preconfigured shader of the threejs material. Let's see what it means with an example:
 
 ```jsx
 <ComponentMaterial uniforms={{ time: { value: 0, type: 'float' } }}>
@@ -144,7 +137,6 @@ Let's see what it means with an example:
     children={`
     gl_FragColor.a = gl_FragColor.a * quadraticInOut((sin(time) + 1.0) / 2.0);`}
   />
-</ComponentMaterial>
 ```
 
 In the code above the `<frag.head>` component adds an easing function `quadraticInOut` to the fragment shader of the material, prepending it before the `main` function of the shader.
@@ -158,10 +150,7 @@ The same goes for the `<vert>` component, which however acts on the vertex shade
 It is possible to inject the code after a particular chunk just by doing
 
 ```jsx
-<frag.my_chunk
-  children={`
-  // my custom shader`}
-/>
+<frag.my_chunk children={`// my custom shader`} />
 ```
 
 where `my_chunk` must be replaced with the name of the chunk concerned.
@@ -169,31 +158,22 @@ where `my_chunk` must be replaced with the name of the chunk concerned.
 If we wanted to insert some code just after the `emissivemap_fragment` chunk ([here the reference for the MeshPhysicalMaterial](https://github.com/mrdoob/three.js/blob/dev/src/renderers/shaders/ShaderLib/meshphysical_frag.glsl.js#L99)) then just use the following code
 
 ```jsx
-<frag.emissivemap_fragment
-  children={`
-  // my custom shader`}
-/>
+<frag.emissivemap_fragment children={`// my custom shader`} />
 ```
 
 #### `replaceChunk`
 
 The `replaceChunk` prop is a boolean that allows you to completely replace the chosen chunk, so instead of append the custom shader code after the chunk it will be replaced directly.
 
-Taking the previous example:
-
 ```jsx
-<frag.emissivemap_fragment
-  replaceChunk
-  children={`
-  // my custom shader which will replace all the chunk related to emissivemap_fragment`}
-/>
+<frag.emissivemap_fragment replaceChunk children={`// my custom shader`} />
 ```
 
 ## `<common>`
 
 The `<common>` tag is useful in case vertex shader and fragment shader share some functions.
 
-Taking the previous example, if both the fragment shader and the vertex shader share the easing function `quadraticInOut`, instead of writing
+❌ If both the fragment shader and the vertex shader share the easing function `quadraticInOut`, instead of writing
 
 ```jsx
 <vert.head
@@ -212,7 +192,7 @@ Taking the previous example, if both the fragment shader and the vertex shader s
 />
 ```
 
-we will write
+✅ we will write
 
 ```jsx
 <common
