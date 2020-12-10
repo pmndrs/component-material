@@ -5,10 +5,10 @@ import { Sphere } from '@react-three/drei'
 import { useTweaks } from 'use-tweaks'
 import * as THREE from 'three'
 import { RGBELoader } from 'three/examples/jsm/loaders/RGBELoader'
-
 import distortion from '../simplex3d'
-import { ComponentMaterial, vert } from '../../src/index'
 import hdr from '../studio_small_04_1k.hdr'
+
+import M from '../../src/index'
 
 function Env() {
   const { gl, scene } = useThree()
@@ -49,7 +49,7 @@ function Scene() {
 
   return (
     <Sphere args={[RADIUS, 512, 512]}>
-      <ComponentMaterial
+      <M
         ref={material}
         clearcoat={clearcoat}
         metalness={metalness}
@@ -61,7 +61,7 @@ function Scene() {
           radiusVariationAmplitude: { value: radiusVariationAmplitude, type: 'float' },
           radiusNoiseFrequency: { value: radiusNoiseFrequency, type: 'float' },
         }}>
-        <vert.head>{/*glsl*/ `
+        <M.vert.head>{/*glsl*/ `
           ${distortion}
           
           float fsnoise(float val1, float val2, float val3){
@@ -91,15 +91,15 @@ function Scene() {
             vec3 distorted2 = distortFunct(nearby2, 1.0);
             return normalize(cross(distorted1 - distortedPosition, distorted2 - distortedPosition));
           }
-        `}</vert.head>
-        <vert.body>{/*glsl*/ `
+        `}</M.vert.head>
+        <M.vert.body>{/*glsl*/ `
           float updateTime = time / 10.0;
           transformed = distortFunct(transformed, 1.0);
           vec3 distortedNormal = distortNormal(position, transformed, normal);
           vNormal = normal + distortedNormal;
           gl_Position = projectionMatrix * modelViewMatrix * vec4(transformed,1.);
-        `}</vert.body>
-      </ComponentMaterial>
+        `}</M.vert.body>
+      </M>
     </Sphere>
   )
 }

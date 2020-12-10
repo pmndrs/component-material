@@ -5,9 +5,9 @@ import { Sphere } from '@react-three/drei'
 import { useTweaks } from 'use-tweaks'
 import * as THREE from 'three'
 import { RGBELoader } from 'three/examples/jsm/loaders/RGBELoader'
-
-import { common, ComponentMaterial, frag } from '../../src/index'
 import hdr from '../studio_small_04_1k.hdr'
+
+import {M} from '../../src/index'
 
 function Env() {
   const { gl, scene } = useThree()
@@ -43,7 +43,7 @@ function Scene() {
 
   return (
     <Sphere args={[4, 512, 512]}>
-      <ComponentMaterial
+      <M
         ref={material}
         metalness={metalness}
         roughness={roughness}
@@ -51,16 +51,16 @@ function Scene() {
         uniforms={{
           time: { value: 0, type: 'float' },
         }}>
-        <frag.head>{/*glsl*/ `
+        <M.frag.head>{/*glsl*/ `
           float quadraticInOut(float t) {
             float p = 2.0 * t * t;
             return t < 0.5 ? p : -p + (4.0 * t) - 1.0;
           }
-        `}</frag.head>
-        <frag.body>{/*glsl*/ `
+        `}</M.frag.head>
+        <M.frag.body>{/*glsl*/ `
           gl_FragColor = vec4(gl_FragColor.rgb, quadraticInOut((sin(time)+1.0)/2.0));  
-        `}</frag.body>
-      </ComponentMaterial>
+        `}</M.frag.body>
+      </M>
     </Sphere>
   )
 }
