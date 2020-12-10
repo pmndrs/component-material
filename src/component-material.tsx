@@ -2,7 +2,6 @@ import React, { useMemo, useRef } from 'react'
 import { MeshPhysicalMaterial } from 'three'
 import { DEFAULT_STATE, FRAG, VERT, COMMON } from './constants'
 import createMaterial from './create-material'
-import { frag, vert, common } from './proxies'
 import { ChildProps, ComponentMaterialProps, ExtensionShaderObject, ExtensionShadersObject, Uniforms } from './types'
 
 function editShader(shader: string, extensions: ExtensionShaderObject) {
@@ -132,10 +131,3 @@ export const ComponentMaterial = React.forwardRef(function ComponentMaterial(
 
   return <primitive ref={ref} object={material} attach="material" {...props} {..._uniforms} />
 })
-
-// @ts-ignore
-ComponentMaterial.vert = vert
-// @ts-ignore
-ComponentMaterial.frag = frag
-// @ts-ignore
-ComponentMaterial.common = common

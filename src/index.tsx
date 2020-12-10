@@ -1,7 +1,17 @@
 import { ComponentMaterial } from './component-material'
+import { frag, vert, common } from './proxies'
 
-export * from './component-material'
+type MT = typeof ComponentMaterial & {
+  vert: typeof vert
+  frag: typeof frag
+  common: typeof common
+}
 
-export default ComponentMaterial
+// @ts-ignore
+const M: MT = ComponentMaterial
 
-export * from './proxies'
+M.vert = vert
+M.frag = frag
+M.common = common
+
+export default M

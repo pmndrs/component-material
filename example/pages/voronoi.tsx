@@ -6,7 +6,7 @@ import { useTweaks } from 'use-tweaks'
 import * as THREE from 'three'
 import { RGBELoader } from 'three/examples/jsm/loaders/RGBELoader'
 
-import M from '../../src/index'
+import {M} from '../../src/index'
 import hdr from '../studio_small_04_1k.hdr'
 import voronoi from '../voronoi'
 

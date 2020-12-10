@@ -7,7 +7,7 @@ import * as THREE from 'three'
 import { RGBELoader } from 'three/examples/jsm/loaders/RGBELoader'
 import hdr from '../studio_small_04_1k.hdr'
 
-import M from '../../src/index'
+import {M} from '../../src/index'
 
 function Env() {
   const { gl, scene } = useThree()
