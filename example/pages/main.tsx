@@ -7,7 +7,7 @@ import * as THREE from 'three'
 import { RGBELoader } from 'three/examples/jsm/loaders/RGBELoader'
 import hdr from '../studio_small_04_1k.hdr'
 
-import {M} from '../../src/index'
+import M from '../../src/index'
 
 function Env() {
   const { gl, scene } = useThree()
@@ -51,15 +51,15 @@ function Scene() {
         uniforms={{
           time: { value: 0, type: 'float' },
         }}>
-        <M.frag.head>{/*glsl*/ `
+        <M.Common>{/*glsl*/ `
           float quadraticInOut(float t) {
             float p = 2.0 * t * t;
             return t < 0.5 ? p : -p + (4.0 * t) - 1.0;
           }
-        `}</M.frag.head>
-        <M.frag.body>{/*glsl*/ `
+        `}</M.Common>
+        <M.Frag.Body>{/*glsl*/ `
           gl_FragColor = vec4(gl_FragColor.rgb, quadraticInOut((sin(time)+1.0)/2.0));  
-        `}</M.frag.body>
+        `}</M.Frag.Body>
       </M>
     </Sphere>
   )

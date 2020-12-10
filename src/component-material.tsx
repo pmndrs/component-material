@@ -1,6 +1,6 @@
 import React, { useMemo, useRef } from 'react'
 import { MeshPhysicalMaterial } from 'three'
-import { DEFAULT_STATE, FRAG, VERT, COMMON } from './constants'
+import { DEFAULT_STATE, FRAG, VERT } from './constants'
 import createMaterial from './create-material'
 import { ChildProps, ComponentMaterialProps, ExtensionShaderObject, ExtensionShadersObject, Uniforms } from './types'
 
@@ -74,33 +74,31 @@ export const ComponentMaterial = React.forwardRef(function ComponentMaterial(
         const shader = child?.props?.children
 
         if (typeof shader === 'string') {
-          if (typeof child.type === 'string' && child.type === COMMON) {
-            acc.common = acc.common.concat(`
-              ${shader}
-            `)
-          } else {
-            const replaceChunk = child?.props?.replaceChunk || false
-            const { chunkName, shaderType }: ChildProps = child.type
+          const replaceChunk = child?.props?.replaceChunk || false
+          const { chunkName, shaderType }: ChildProps = child.type
 
-            if ([VERT, FRAG].includes(shaderType)) {
-              if (chunkName === 'head') {
-                acc[shaderType].head = acc[shaderType].head.concat(`
+          if ([VERT, FRAG].includes(shaderType)) {
+            if (chunkName === 'Head') {
+              acc[shaderType].head = acc[shaderType].head.concat(`
                   ${shader}
                 `)
-              } else {
-                if (!acc[shaderType][chunkName]) {
-                  acc[shaderType][chunkName] = {
-                    value: '',
-                    replaceChunk: false,
-                  }
+            } else {
+              if (!acc[shaderType][chunkName]) {
+                acc[shaderType][chunkName] = {
+                  value: '',
+                  replaceChunk: false,
                 }
+              }
 
-                acc[shaderType][chunkName].replaceChunk = replaceChunk
-                acc[shaderType][chunkName].value = acc[shaderType][chunkName].value.concat(`
+              acc[shaderType][chunkName].replaceChunk = replaceChunk
+              acc[shaderType][chunkName].value = acc[shaderType][chunkName].value.concat(`
                     ${shader}
                   `)
-              }
             }
+          } else {
+            acc.common = acc.common.concat(`
+                ${shader}
+              `)
           }
         }
 

@@ -1,4 +1,3 @@
-import React from 'react'
 import { DEFAULT_FRAG_CHUNK, DEFAULT_VERT_CHUNK, FRAG, VERT } from './constants'
 import { ProxyProps } from './types'
 
@@ -11,7 +10,7 @@ function NullFunction() {
 type ShaderProxyHelper<T extends string> = {
   [key in T]: any
 } & {
-  body: any
+  Body: any
 }
 
 // -- VERTEX PROXY --
@@ -22,7 +21,7 @@ const vertHandler = {
     }
     Object.defineProperty(Component, 'chunkName', { writable: true })
     Object.defineProperty(Component, 'shaderType', { writable: true })
-    Component.chunkName = name === 'body' ? DEFAULT_VERT_CHUNK : name
+    Component.chunkName = name === 'Body' ? DEFAULT_VERT_CHUNK : name
     Component.shaderType = VERT
     return Component
   },
@@ -37,7 +36,7 @@ const fragHandler = {
     }
     Object.defineProperty(Component, 'chunkName', { writable: true })
     Object.defineProperty(Component, 'shaderType', { writable: true })
-    Component.chunkName = name === 'body' ? DEFAULT_FRAG_CHUNK : name
+    Component.chunkName = name === 'Body' ? DEFAULT_FRAG_CHUNK : name
     Component.shaderType = FRAG
     return Component
   },
@@ -46,7 +45,7 @@ const fragHandler = {
 export const frag: ShaderProxyHelper<fragmentChunks | commonChunks> = new Proxy(NullFunction, fragHandler)
 
 export function common({ children }: ProxyProps) {
-  return <>{children}</>
+  return children
 }
 
 // TODO

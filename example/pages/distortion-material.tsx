@@ -61,7 +61,7 @@ function Scene() {
           radiusVariationAmplitude: { value: radiusVariationAmplitude, type: 'float' },
           radiusNoiseFrequency: { value: radiusNoiseFrequency, type: 'float' },
         }}>
-        <M.vert.head>{/*glsl*/ `
+        <M.Vert.Head>{/*glsl*/ `
           ${distortion}
           
           float fsnoise(float val1, float val2, float val3){
@@ -91,14 +91,14 @@ function Scene() {
             vec3 distorted2 = distortFunct(nearby2, 1.0);
             return normalize(cross(distorted1 - distortedPosition, distorted2 - distortedPosition));
           }
-        `}</M.vert.head>
-        <M.vert.body>{/*glsl*/ `
+        `}</M.Vert.Head>
+        <M.Vert.Body>{/*glsl*/ `
           float updateTime = time / 10.0;
           transformed = distortFunct(transformed, 1.0);
           vec3 distortedNormal = distortNormal(position, transformed, normal);
           vNormal = normal + distortedNormal;
           gl_Position = projectionMatrix * modelViewMatrix * vec4(transformed,1.);
-        `}</M.vert.body>
+        `}</M.Vert.Body>
       </M>
     </Sphere>
   )

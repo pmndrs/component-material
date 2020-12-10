@@ -6,7 +6,7 @@ import { useTweaks } from 'use-tweaks'
 import * as THREE from 'three'
 import { RGBELoader } from 'three/examples/jsm/loaders/RGBELoader'
 
-import {M} from '../../src/index'
+import M from '../../src/index'
 import hdr from '../studio_small_04_1k.hdr'
 import voronoi from '../voronoi'
 
@@ -63,7 +63,7 @@ function Scene(): JSX.Element {
         }}
         varyings={{ vTransformed: { type: 'vec3' } }}
         color="white">
-        <M.vert.head>
+        <M.Vert.Head>
           {/*glsl*/ `
             ${voronoi}
 
@@ -88,8 +88,8 @@ function Scene(): JSX.Element {
               return normalize(cross(distorted1 - distortedPosition, distorted2 - distortedPosition));
             }
           `}
-        </M.vert.head>
-        <M.vert.body>
+        </M.Vert.Head>
+        <M.Vert.Body>
           {/*glsl*/ `
             float updateTime = time / 10.0;
             
@@ -102,7 +102,7 @@ function Scene(): JSX.Element {
             vNormal = normal + distortedNormal;
             gl_Position = projectionMatrix * modelViewMatrix * vec4(transformed,1.);
           `}
-        </M.vert.body>
+        </M.Vert.Body>
       </M>
     </Sphere>
   )
