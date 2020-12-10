@@ -6,7 +6,7 @@
 
 # Component Material
 
-ComponentMaterial is a React utility that helps you compose and modify materials in [react-three-fiber](https://github.com/pmndrs/react-three-fiber) and threejs.
+Material is a React utility that helps you compose and modify materials in [react-three-fiber](https://github.com/pmndrs/react-three-fiber) and threejs.
 
 ### Examples
 
@@ -34,7 +34,7 @@ function CustomMaterial(props) {
         g: { value: 0.5, type: 'float' },
         b: { value: 0, type: 'float' },
       }}>
-      <Material.frag.body
+      <Material.Frag.Body
         // 2️⃣ Access the uniforms in your shader
         children={`gl_FragColor = vec4(r, g, b, 1.0);`}
       />
@@ -58,11 +58,11 @@ function Sphere() {
 - Syntax-highlighting with either [tagged glsl-literals](https://marketplace.visualstudio.com/items?itemName=boyswan.glsl-literal) or [comment-tagged templates](https://marketplace.visualstudio.com/items?itemName=bierner.comment-tagged-templates)
 - Glslify and imports via [babel-plugin-glsl](https://github.com/onnovisser/babel-plugin-glsl)
 
-## `<ComponentMaterial/>`
+## `<Material/>`
 
 #### `from`
 
-By default ComponentMaterial extends three's MeshPhysicalMaterial. If you want to extend a different material just use the `from` prop passing the desired material constructor.
+By default Material extends three's MeshPhysicalMaterial. If you want to extend a different material just use the `from` prop passing the desired material constructor.
 
 ```jsx
 <Material from={THREE.MeshPhongMaterial} />
@@ -120,35 +120,35 @@ vec2 myVarying2;
 
 ## Fragment- and vertex-shader composition
 
-The `frag` and `vert` tags have the function of injecting the shader text, passed as children, into the preconfigured shader of the threejs material. Let's see what it means with an example:
+The `Frag` and `Vert` tags have the function of injecting the shader text, passed as children, into the preconfigured shader of the threejs material. Let's see what it means with an example:
 
 ```jsx
 <Material uniforms={{ time: { value: 0, type: 'float' } }}>
-  <Material.frag.head
+  <Material.Frag.head
     children={`
     float quadraticInOut(float t) {
       float p = 2.0 * t * t;
       return t < 0.5 ? p : -p + (4.0 * t) - 1.0;
     }`}
   />
-  <Material.frag.body
+  <Material.Frag.Body
     children={`
     gl_FragColor.a = gl_FragColor.a * quadraticInOut((sin(time) + 1.0) / 2.0);`}
   />
 ```
 
-In the code above the `frag.head` component adds an easing function `quadraticInOut` to the fragment shader of the material, prepending it before the `main` function of the shader.
+In the code above the `Frag.Head` component adds an easing function `quadraticInOut` to the fragment shader of the material, prepending it before the `main` function of the shader.
 
-The `frag.body` component instead adds a line of code that modify the `gl_FragColor` alpha value, appending it after the last operation of the main function.
+The `Frag.Body` component instead adds a line of code that modify the `gl_FragColor` alpha value, appending it after the last operation of the main function.
 
-In particular, if we take as an example the fragment shader of the `MeshPhysicalMaterial`, `frag.head` prepends the code before [this shader line](https://github.com/mrdoob/three.js/blob/dev/src/renderers/shaders/ShaderLib/meshphysical_frag.glsl.js#L2), `frag.body` instead posts the code after [this shader line](https://github.com/mrdoob/three.js/blob/dev/src/renderers/shaders/ShaderLib/meshphysical_frag.glsl.js#L124) (the `dithering_fragment` chunk).
+In particular, if we take as an example the fragment shader of the `MeshPhysicalMaterial`, `Frag.Head` prepends the code before [this shader line](https://github.com/mrdoob/three.js/blob/dev/src/renderers/shaders/ShaderLib/meshphysical_frag.glsl.js#L2), `Frag.Body` instead posts the code after [this shader line](https://github.com/mrdoob/three.js/blob/dev/src/renderers/shaders/ShaderLib/meshphysical_frag.glsl.js#L124) (the `dithering_fragment` chunk).
 
-The same goes for the `vert` component, which however acts on the vertex shader. In particular, `vert.head` prepends the code to [this shader line](https://github.com/mrdoob/three.js/blob/dev/src/renderers/shaders/ShaderLib/meshphysical_vert.glsl.js#L2), while `vert.body` appends the code to [this shader line](https://github.com/mrdoob/three.js/blob/dev/src/renderers/shaders/ShaderLib/meshphysical_vert.glsl.js#L60) (the `project_vertex` chunk).
+The same goes for the `Vert` component, which however acts on the vertex shader. In particular, `Vert.Head` prepends the code to [this shader line](https://github.com/mrdoob/three.js/blob/dev/src/renderers/shaders/ShaderLib/meshphysical_vert.glsl.js#L2), while `Vert.Body` appends the code to [this shader line](https://github.com/mrdoob/three.js/blob/dev/src/renderers/shaders/ShaderLib/meshphysical_vert.glsl.js#L60) (the `project_vertex` chunk).
 
 It is possible to inject the code after a particular chunk just by doing
 
 ```jsx
-<Material.frag.my_chunk children={`// my custom shader`} />
+<Material.Frag.my_chunk children={`// my custom shader`} />
 ```
 
 where `my_chunk` must be replaced with the name of the chunk concerned.
@@ -156,7 +156,7 @@ where `my_chunk` must be replaced with the name of the chunk concerned.
 If we wanted to insert some code just after the `emissivemap_fragment` chunk ([here the reference for the MeshPhysicalMaterial](https://github.com/mrdoob/three.js/blob/dev/src/renderers/shaders/ShaderLib/meshphysical_frag.glsl.js#L99)) then just use the following code
 
 ```jsx
-<Material.frag.emissivemap_fragment children={`// my custom shader`} />
+<Material.Frag.emissivemap_fragment children={`// my custom shader`} />
 ```
 
 #### `replaceChunk`
@@ -164,24 +164,24 @@ If we wanted to insert some code just after the `emissivemap_fragment` chunk ([h
 The `replaceChunk` prop is a boolean that allows you to completely replace the chosen chunk, so instead of append the custom shader code after the chunk it will be replaced directly.
 
 ```jsx
-<Material.frag.emissivemap_fragment replaceChunk children={`// my custom shader`} />
+<Material.Frag.emissivemap_fragment replaceChunk children={`// my custom shader`} />
 ```
 
 ## Common chunks
 
-The `common` tag is useful in case vertex shader and fragment shader share some functions.
+The `Common` tag is useful in case vertex shader and fragment shader share some functions.
 
 ❌ If both the fragment shader and the vertex shader share the easing function `quadraticInOut`, instead of writing
 
 ```jsx
-<Material.vert.head
+<Material.Vert.Head
   children={`
   float quadraticInOut(float t) {
     float p = 2.0 * t * t;
     return t < 0.5 ? p : -p + (4.0 * t) - 1.0;
   }`}
 />
-<Material.frag.head
+<Material.Frag.head
   children={`
   float quadraticInOut(float t) {
     float p = 2.0 * t * t;
@@ -193,7 +193,7 @@ The `common` tag is useful in case vertex shader and fragment shader share some 
 ✅ we will write
 
 ```jsx
-<Material.common
+<Material.Common
   children={`
   float quadraticInOut(float t) {
     float p = 2.0 * t * t;
