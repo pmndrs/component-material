@@ -217,5 +217,16 @@ we will write
 
 ## Features
 
-- Autocomplete: Typescript lets us add a bunch useful in-editor hints
+- Chunks Autocomplete: Typescript lets us add a bunch useful in-editor hints
 ![component-material autocomplete](https://raw.githubusercontent.com/emmelleppi/component-material/master/readme/autocomplete.jpeg)
+- Syntax Highlighting: You can use tagged glsl template strings to get highlighting and autocomplete in your shaders, with the [Comment tagged templates
+](https://marketplace.visualstudio.com/items?itemName=bierner.comment-tagged-templates) VSC extension. Note that this will also work on codesandbox:
+
+```
+<frag.head>
+{/*glsl*/`
+   vec2 myFunction() { ... }
+`}
+</frag.head>
+```
+
