@@ -124,7 +124,7 @@ The `Frag` and `Vert` tags have the function of injecting the shader text, passe
 
 ```jsx
 <Material uniforms={{ time: { value: 0, type: 'float' } }}>
-  <Material.Frag.head
+  <Material.Frag.Head
     children={`
     float quadraticInOut(float t) {
       float p = 2.0 * t * t;
@@ -181,7 +181,7 @@ The `Common` tag is useful in case vertex shader and fragment shader share some 
     return t < 0.5 ? p : -p + (4.0 * t) - 1.0;
   }`}
 />
-<Material.Frag.head
+<Material.Frag.Head
   children={`
   float quadraticInOut(float t) {
     float p = 2.0 * t * t;
