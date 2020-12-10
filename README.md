@@ -181,6 +181,40 @@ Taking the previous example:
 <br/>
 <br/>
 
+## `<common>`
+The `<common>` tag is useful in case vertex shader and fragment shader share some functions.
+
+Taking the previous example, if both the fragment shader and the vertex shader share the easing function `quadraticInOut`, instead of writing
+
+```jsx
+        <vert.head>{`
+          float quadraticInOut(float t) {
+            float p = 2.0 * t * t;
+            return t < 0.5 ? p : -p + (4.0 * t) - 1.0;
+          }
+        `}</vert.head>
+	<frag.head>{`
+          float quadraticInOut(float t) {
+            float p = 2.0 * t * t;
+            return t < 0.5 ? p : -p + (4.0 * t) - 1.0;
+          }
+        `}</frag.head>
+```
+
+we will write
+
+```jsx
+        <common>{`
+          float quadraticInOut(float t) {
+            float p = 2.0 * t * t;
+            return t < 0.5 ? p : -p + (4.0 * t) - 1.0;
+          }
+        `}</common>
+```
+
+<br/>
+<br/>
+
 ## Features
 
 - Autocomplete: Typescript lets us add a bunch useful in-editor hints
