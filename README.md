@@ -51,8 +51,6 @@ function MyMaterial(props) {
 
 1. declare your uniforms
 2. write your fragment and vertex shader by hooking into existing shader chunks
-<br/>
-<br/>
 
 ## `<ComponentMaterial/>`
 
@@ -64,7 +62,6 @@ If you want to extend a different material just use the `from` prop passing the 
 ```jsx
    <ComponentMaterial from={THREE.MeshPhongMaterial} >...</ComponentMaterial>
 ```
-<br/>
  
 #### `uniforms`
 
@@ -97,8 +94,6 @@ function MyMaterial({ myColorProp }) {
 - The correspondences between glsl and javascript types can be seen [here](https://threejs.org/docs/#api/en/core/Uniform)
 - Uniforms cannot be defined twice in the same shader. So be careful not to define the same uniforms inside the `head` tag.
 
-<br/>
-
 #### `varyings`
 
 Varying variables can be defined directly inside the shader `head` tag or they can be declared as prop:
@@ -115,8 +110,6 @@ Varying variables can be defined directly inside the shader `head` tag or they c
 
 **Note:** 
 - As uniforms, varyings cannot be defined twice in the same shader, this will give a glsl error. So be careful not to define the same varyings inside the `head` tag.
-<br/>
-<br/>
 
 ## `<frag />` & `<vert />`
 The `frag` and `vert` tags have the function of injecting the shader text, passed as children, into the preconfigured shader of the threejs material.
@@ -166,8 +159,6 @@ If we wanted to insert some code just after the `emissivemap_fragment` chunk ([h
   `}</frag.emissivemap_fragment>
 ```
 
-<br />
-
 #### `replaceChunk`
 The `replaceChunk` prop is a boolean that allows you to completely replace the chosen chunk, so instead of append the custom shader code after the chunk it will be replaced directly.
 
@@ -177,9 +168,6 @@ Taking the previous example:
     my custom shader which will replace all the chunk related to emissivemap_fragment
   `}</frag.emissivemap_fragment>
 ```
-
-<br/>
-<br/>
 
 ## `<common>`
 The `<common>` tag is useful in case vertex shader and fragment shader share some functions.
@@ -211,9 +199,6 @@ we will write
           }
         `}</common>
 ```
-
-<br/>
-<br/>
 
 ## Features
 
