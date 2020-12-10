@@ -52,10 +52,12 @@ function Sphere() {
 
 ## Features
 
-- Chunks Autocomplete: Typescript lets us add a bunch useful in-editor hints
+- Create custom shaders on top of existing threejs Shaders and shader-chunks
+- Compose your shader code with modular injects
+- Auto-completion, intellisense and typechecking
   ![component-material autocomplete](https://raw.githubusercontent.com/emmelleppi/component-material/master/readme/autocomplete.jpg)
 - Syntax Highlighting with either tagged glsl templates [glsl-literal](https://marketplace.visualstudio.com/items?itemName=boyswan.glsl-literal) or [comment-tagged-templates](https://marketplace.visualstudio.com/items?itemName=bierner.comment-tagged-templates).
-- Glslify via [babel-plugin-glsl](https://github.com/onnovisser/babel-plugin-glsl)
+- Glslify and imports via [babel-plugin-glsl](https://github.com/onnovisser/babel-plugin-glsl)
   ![glslify](https://raw.githubusercontent.com/pmndrs/component-material/master/readme/glslify.jpg)
 
 ## `<ComponentMaterial/>`
@@ -90,7 +92,7 @@ function CustomMaterial({ color }) {
   return (
     <ComponentMaterial
       uniforms={{ color: { value: color, type: 'vec3' } }}
-      color={color} // color uniform will have the value of myColorProp
+      color={color} // color uniform will have the value of the color prop
     />
 ```
 
@@ -158,8 +160,7 @@ It is possible to inject the code after a particular chunk just by doing
 ```jsx
 <frag.my_chunk
   children={`
-    my custom shader
-  `}
+  // my custom shader`}
 />
 ```
 
@@ -170,8 +171,7 @@ If we wanted to insert some code just after the `emissivemap_fragment` chunk ([h
 ```jsx
 <frag.emissivemap_fragment
   children={`
-    my custom shader
-  `}
+  // my custom shader`}
 />
 ```
 
@@ -185,8 +185,7 @@ Taking the previous example:
 <frag.emissivemap_fragment
   replaceChunk
   children={`
-    my custom shader which will replace all the chunk related to emissivemap_fragment
-  `}
+  // my custom shader which will replace all the chunk related to emissivemap_fragment`}
 />
 ```
 
@@ -199,19 +198,17 @@ Taking the previous example, if both the fragment shader and the vertex shader s
 ```jsx
 <vert.head
   children={`
-    float quadraticInOut(float t) {
-      float p = 2.0 * t * t;
-      return t < 0.5 ? p : -p + (4.0 * t) - 1.0;
-    }
-  `}
+  float quadraticInOut(float t) {
+    float p = 2.0 * t * t;
+    return t < 0.5 ? p : -p + (4.0 * t) - 1.0;
+  }`}
 />
 <frag.head
   children={`
-    float quadraticInOut(float t) {
-      float p = 2.0 * t * t;
-      return t < 0.5 ? p : -p + (4.0 * t) - 1.0;
-    }
-  `}
+  float quadraticInOut(float t) {
+    float p = 2.0 * t * t;
+    return t < 0.5 ? p : -p + (4.0 * t) - 1.0;
+  }`}
 />
 ```
 
@@ -220,10 +217,9 @@ we will write
 ```jsx
 <common
   children={`
-    float quadraticInOut(float t) {
-      float p = 2.0 * t * t;
-      return t < 0.5 ? p : -p + (4.0 * t) - 1.0;
-    }
-  `}
+  float quadraticInOut(float t) {
+    float p = 2.0 * t * t;
+    return t < 0.5 ? p : -p + (4.0 * t) - 1.0;
+  }`}
 />
 ```
