@@ -42,10 +42,12 @@ function CustomMaterial(props) {
   )
 }
 
-;<mesh>
-  <sphereBufferMaterial />
-  <CustomMaterial />
-</mesh>
+function Sphere() {
+  return (
+    <mesh>
+      <sphereBufferMaterial />
+      <CustomMaterial />
+    </mesh>
 ```
 
 ## Features
