@@ -55,10 +55,8 @@ function Sphere() {
 - Create custom shaders on top of existing threejs Shaders and shader-chunks
 - Compose your shader code with modular injects
 - Auto-completion, intellisense and typechecking
-  ![component-material autocomplete](https://raw.githubusercontent.com/emmelleppi/component-material/master/readme/autocomplete.jpg)
-- Syntax-highlighting with either [tagged glsl-literals](https://marketplace.visualstudio.com/items?itemName=boyswan.glsl-literal) or [comment-tagged templates](https://marketplace.visualstudio.com/items?itemName=bierner.comment-tagged-templates).
+- Syntax-highlighting with either [tagged glsl-literals](https://marketplace.visualstudio.com/items?itemName=boyswan.glsl-literal) or [comment-tagged templates](https://marketplace.visualstudio.com/items?itemName=bierner.comment-tagged-templates)
 - Glslify and imports via [babel-plugin-glsl](https://github.com/onnovisser/babel-plugin-glsl)
-  ![glslify](https://raw.githubusercontent.com/pmndrs/component-material/master/readme/glslify.jpg)
 
 ## `<ComponentMaterial/>`
 
