@@ -1,4 +1,4 @@
-import React from "react"
+import React from 'react';
 import {
   DEFAULT_FRAG_CHUNK,
   DEFAULT_VERT_CHUNK,
@@ -57,7 +57,7 @@ export const frag: ShaderProxyHelper<fragmentChunks | commonChunks> = new Proxy(
 );
 
 export function common({ children }: ProxyProps) {
-  return <>{children}</>
+  return <>{children}</>;
 }
 
 // TODO

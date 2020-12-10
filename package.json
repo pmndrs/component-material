@@ -2,6 +2,10 @@
   "name": "component-material",
   "version": "1.0.2",
   "description": "",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/emmelleppi/component-material.git"
+  },
   "keywords": [],
   "main": "dist/index.js",
   "typings": "dist/index.d.ts",

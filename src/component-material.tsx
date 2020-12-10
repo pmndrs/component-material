@@ -78,45 +78,36 @@ export const ComponentMaterial = React.forwardRef(function ComponentMaterial(
     () =>
       React.Children.toArray(children).reduce((acc: any, child: any) => {
         const shader = child?.props?.children;
-        
+
         if (typeof shader === 'string') {
-          
-          if (typeof child.type === "string" && child.type === COMMON) {
+          if (typeof child.type === 'string' && child.type === COMMON) {
             acc.common = acc.common.concat(`
               ${shader}
             `);
-
           } else {
-            
             const replaceChunk = child?.props?.replaceChunk || false;
             const { chunkName, shaderType }: ChildProps = child.type;
-  
-            if ([VERT, FRAG].includes(shaderType)) {
 
+            if ([VERT, FRAG].includes(shaderType)) {
               if (chunkName === 'head') {
-              
                 acc[shaderType].head = acc[shaderType].head.concat(`
                   ${shader}
                 `);
-
               } else {
-                
                 if (!acc[shaderType][chunkName]) {
                   acc[shaderType][chunkName] = {
                     value: '',
                     replaceChunk: false,
                   };
                 }
-                
+
                 acc[shaderType][chunkName].replaceChunk = replaceChunk;
-                acc[shaderType][chunkName].value = acc[shaderType][chunkName].value
-                  .concat(`
+                acc[shaderType][chunkName].value = acc[shaderType][chunkName]
+                  .value.concat(`
                     ${shader}
                   `);
-
               }
             }
-
           }
         }
 
