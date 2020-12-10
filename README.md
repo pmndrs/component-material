@@ -34,10 +34,10 @@ function CustomMaterial(props) {
         g: { value: 0.5, type: 'float' },
         b: { value: 0, type: 'float' },
       }}>
-      <frag.body>{`
+      <frag.body
         // 2️⃣ Access the uniforms in your shader
-        gl_FragColor = vec4(r, g, b, 1.0);
-      `}</frag.body>
+        children={`gl_FragColor = vec4(r, g, b, 1.0);`}
+      />
     </ComponentMaterial>
   )
 }
