@@ -1,14 +1,14 @@
-import 'react-app-polyfill/ie11';
-import * as React from 'react';
-import * as ReactDOM from 'react-dom';
+import 'react-app-polyfill/ie11'
+import * as React from 'react'
+import * as ReactDOM from 'react-dom'
 
-const Main = React.lazy(() => import('./pages/main'));
-const DistortionMaterial = React.lazy(() => import('./pages/distortion-material'));
-const Voronoi = React.lazy(() => import('./pages/voronoi'));
+const Main = React.lazy(() => import('./pages/main'))
+const DistortionMaterial = React.lazy(() => import('./pages/distortion-material'))
+const Voronoi = React.lazy(() => import('./pages/voronoi'))
 
-import { Switch, Route } from 'wouter';
+import { Switch, Route } from 'wouter'
 
-import './style.css';
+import './style.css'
 
 function App() {
   return (
@@ -19,7 +19,7 @@ function App() {
         <Route path="/voronoi">{() => <Voronoi />}</Route>
       </Switch>
     </React.Suspense>
-  );
+  )
 }
 
-ReactDOM.render(<App />, document.getElementById('root'));
+ReactDOM.render(<App />, document.getElementById('root'))

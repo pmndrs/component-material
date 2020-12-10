@@ -1,13 +1,13 @@
-import { MaterialProps } from 'react-three-fiber';
-import { Material } from 'three';
+import { MaterialProps } from 'react-three-fiber'
+import { Material } from 'three'
 
 export type ProxyProps = {
-  children: string[];
-};
+  children: string[]
+}
 export type ExtensionsType = {
-  value?: string;
-  replaceChunk: boolean;
-};
+  value?: string
+  replaceChunk: boolean
+}
 export type Uniform = {
   value:
     | number
@@ -24,27 +24,27 @@ export type Uniform = {
     | THREE.Matrix3
     | THREE.Matrix4
     | Int32Array
-    | THREE.CubeTexture;
-  type: string;
-};
-export type Uniforms = { [key: string]: Uniform };
+    | THREE.CubeTexture
+  type: string
+}
+export type Uniforms = { [key: string]: Uniform }
 export interface GenericMaterial extends Material {
-  [key: string]: any;
+  [key: string]: any
 }
 export type ComponentMaterialProps = MaterialProps & {
-  varyings: Uniforms;
-  uniforms: Uniforms;
-  from: GenericMaterial;
-};
+  varyings: Uniforms
+  uniforms: Uniforms
+  from: GenericMaterial
+}
 export type ChildProps = {
-  chunkName: string;
-  shaderType: string;
-};
+  chunkName: string
+  shaderType: string
+}
 export type ExtensionShaderObject = {
-  [key: string]: ExtensionsType;
-};
+  [key: string]: ExtensionsType
+}
 export type ExtensionShadersObject = {
-  vert: ExtensionShaderObject & { head: string };
-  frag: ExtensionShaderObject & { head: string };
-  common: string;
-};
+  vert: ExtensionShaderObject & { head: string }
+  frag: ExtensionShaderObject & { head: string }
+  common: string
+}

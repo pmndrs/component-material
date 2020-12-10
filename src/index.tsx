@@ -1,2 +1,2 @@
-export * from './component-material';
-export * from './proxies';
+export * from './component-material'
+export * from './proxies'

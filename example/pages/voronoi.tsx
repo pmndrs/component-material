@@ -1,13 +1,13 @@
-import 'react-app-polyfill/ie11';
-import React, { Suspense, useEffect, useRef } from 'react';
-import { Canvas, useFrame, useLoader, useThree } from 'react-three-fiber';
-import { OrbitControls, Sphere } from '@react-three/drei';
-import { useTweaks } from 'use-tweaks';
-import * as THREE from "three"
+import 'react-app-polyfill/ie11'
+import React, { Suspense, useEffect, useRef } from 'react'
+import { Canvas, useFrame, useLoader, useThree } from 'react-three-fiber'
+import { OrbitControls, Sphere } from '@react-three/drei'
+import { useTweaks } from 'use-tweaks'
+import * as THREE from 'three'
 import { RGBELoader } from 'three/examples/jsm/loaders/RGBELoader'
 
-import { ComponentMaterial, frag, vert } from '../../src/index';
-import hdr from "../studio_small_04_1k.hdr"
+import { ComponentMaterial, frag, vert } from '../../src/index'
+import hdr from '../studio_small_04_1k.hdr'
 import voronoi from '../voronoi'
 
 function Env() {
@@ -16,7 +16,7 @@ function Env() {
 
   useEffect(() => {
     const gen = new THREE.PMREMGenerator(gl)
-    const texture = gen.fromEquirectangular(result).texture 
+    const texture = gen.fromEquirectangular(result).texture
     scene.environment = texture
     result.dispose()
     gen.dispose()
@@ -29,35 +29,29 @@ function Env() {
 }
 
 type Uniforms = {
-  time: any,
-  red: any,
-  green: any,
+  time: any
+  red: any
+  green: any
   blue: any
 }
 
 function Scene(): JSX.Element {
-  const material = useRef();
+  const material = useRef()
   const sphere = useRef()
 
-  const {
-    amplitude,
-    frequency,
-    jitter,
-    metalness,
-    roughness,
-  } = useTweaks({
-    metalness: { value: 1., min: 0, max: 1 },
-    roughness: { value: 1., min: 0, max: 1 },
-    amplitude: { value: 1., min: -5, max: 5 },
-    frequency: { value: .85, min: 0, max: 10 },
-    jitter: { value: .9, min: 0, max: 2 },
-  });
+  const { amplitude, frequency, jitter, metalness, roughness } = useTweaks({
+    metalness: { value: 1, min: 0, max: 1 },
+    roughness: { value: 1, min: 0, max: 1 },
+    amplitude: { value: 1, min: -5, max: 5 },
+    frequency: { value: 0.85, min: 0, max: 10 },
+    jitter: { value: 0.9, min: 0, max: 2 },
+  })
 
   useFrame(({ clock }) => {
     if (material.current) {
-      material.current.time = clock.getElapsedTime();
+      material.current.time = clock.getElapsedTime()
     }
-  });
+  })
 
   const RADIUS = 4
 
@@ -68,18 +62,16 @@ function Scene(): JSX.Element {
         roughness={roughness}
         metalness={metalness}
         uniforms={{
-          radius: { value: RADIUS, type: "float" },
-          time: { value: 0, type: "float" },
-          jitter: { value: jitter, type: "float" },
-          amplitude: { value: amplitude, type: "float" },
-          frequency: { value: frequency, type: "float" },
+          radius: { value: RADIUS, type: 'float' },
+          time: { value: 0, type: 'float' },
+          jitter: { value: jitter, type: 'float' },
+          amplitude: { value: amplitude, type: 'float' },
+          frequency: { value: frequency, type: 'float' },
         }}
-        varyings={{ vTransformed : { type: "vec3" }}}
-        color="white"
-
-      >
+        varyings={{ vTransformed: { type: 'vec3' } }}
+        color="white">
         <vert.head>
-          {/*glsl*/`
+          {/*glsl*/ `
             ${voronoi}
 
             vec3 distortFunct(vec3 transformed, float factor) {
@@ -105,7 +97,7 @@ function Scene(): JSX.Element {
           `}
         </vert.head>
         <vert.body>
-          {/*glsl*/`
+          {/*glsl*/ `
             float updateTime = time / 10.0;
             
             transformed = distortFunct(transformed, 1.0);
@@ -120,23 +112,23 @@ function Scene(): JSX.Element {
         </vert.body>
       </ComponentMaterial>
     </Sphere>
-  );
+  )
 }
 
 function App() {
   return (
     <Canvas camera={{ position: [0, 0, 10] }}>
-      <color args={["#000"]} attach="background" />
+      <color args={['#000']} attach="background" />
       <directionalLight position={[0, 0, 10]} intensity={0.4} />
-      <spotLight position={[8, 8, -8]} radius={Math.PI}  intensity={1} />
-      <spotLight position={[-4, 8, 4]} color="blue" radius={Math.PI}  intensity={.4} />
-      <directionalLight position={[4, -8, 0]} color="red" intensity={.4} />
+      <spotLight position={[8, 8, -8]} radius={Math.PI} intensity={1} />
+      <spotLight position={[-4, 8, 4]} color="blue" radius={Math.PI} intensity={0.4} />
+      <directionalLight position={[4, -8, 0]} color="red" intensity={0.4} />
       <Scene />
       <Suspense fallback={null}>
-      <Env />
+        <Env />
       </Suspense>
     </Canvas>
-  );
+  )
 }
 
-export default App;
+export default App

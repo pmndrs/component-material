@@ -1,63 +1,52 @@
-import React from 'react';
-import {
-  DEFAULT_FRAG_CHUNK,
-  DEFAULT_VERT_CHUNK,
-  FRAG,
-  VERT,
-} from './constants';
-import { ProxyProps } from './types';
+import React from 'react'
+import { DEFAULT_FRAG_CHUNK, DEFAULT_VERT_CHUNK, FRAG, VERT } from './constants'
+import { ProxyProps } from './types'
 
-import { fragmentChunks, vertexChunks, commonChunks } from './generated';
+import { fragmentChunks, vertexChunks, commonChunks } from './generated'
 
 function NullFunction() {
-  return null;
+  return null
 }
 
 type ShaderProxyHelper<T extends string> = {
-  [key in T]: any;
+  [key in T]: any
 } & {
-  body: any;
-};
+  body: any
+}
 
 // -- VERTEX PROXY --
 const vertHandler = {
   get: function(_: any, name: string) {
     const Component = function({ children }: ProxyProps) {
-      return children;
-    };
-    Object.defineProperty(Component, 'chunkName', { writable: true });
-    Object.defineProperty(Component, 'shaderType', { writable: true });
-    Component.chunkName = name === 'body' ? DEFAULT_VERT_CHUNK : name;
-    Component.shaderType = VERT;
-    return Component;
+      return children
+    }
+    Object.defineProperty(Component, 'chunkName', { writable: true })
+    Object.defineProperty(Component, 'shaderType', { writable: true })
+    Component.chunkName = name === 'body' ? DEFAULT_VERT_CHUNK : name
+    Component.shaderType = VERT
+    return Component
   },
-};
-export const vert: ShaderProxyHelper<vertexChunks | commonChunks> = new Proxy(
-  NullFunction,
-  vertHandler
-);
+}
+export const vert: ShaderProxyHelper<vertexChunks | commonChunks> = new Proxy(NullFunction, vertHandler)
 
 // -- FRAGMENT PROXY --
 const fragHandler = {
   get: function(_: any, name: string) {
     const Component = function({ children }: ProxyProps) {
-      return children;
-    };
-    Object.defineProperty(Component, 'chunkName', { writable: true });
-    Object.defineProperty(Component, 'shaderType', { writable: true });
-    Component.chunkName = name === 'body' ? DEFAULT_FRAG_CHUNK : name;
-    Component.shaderType = FRAG;
-    return Component;
+      return children
+    }
+    Object.defineProperty(Component, 'chunkName', { writable: true })
+    Object.defineProperty(Component, 'shaderType', { writable: true })
+    Component.chunkName = name === 'body' ? DEFAULT_FRAG_CHUNK : name
+    Component.shaderType = FRAG
+    return Component
   },
-};
+}
 
-export const frag: ShaderProxyHelper<fragmentChunks | commonChunks> = new Proxy(
-  NullFunction,
-  fragHandler
-);
+export const frag: ShaderProxyHelper<fragmentChunks | commonChunks> = new Proxy(NullFunction, fragHandler)
 
 export function common({ children }: ProxyProps) {
-  return <>{children}</>;
+  return <>{children}</>
 }
 
 // TODO

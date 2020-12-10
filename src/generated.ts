@@ -76,7 +76,7 @@ export type fragmentChunks =
   | 'normal_frag'
   | 'points_frag'
   | 'shadow_frag'
-  | 'sprite_frag';
+  | 'sprite_frag'
 export type vertexChunks =
   | 'begin_vertex'
   | 'beginnormal_vertex'
@@ -124,11 +124,5 @@ export type vertexChunks =
   | 'normal_vert'
   | 'points_vert'
   | 'shadow_vert'
-  | 'sprite_vert';
-export type commonChunks =
-  | 'head'
-  | 'body'
-  | 'bsdfs'
-  | 'common'
-  | 'lights_pars_begin'
-  | 'packing';
+  | 'sprite_vert'
+export type commonChunks = 'head' | 'body' | 'bsdfs' | 'common' | 'lights_pars_begin' | 'packing'
