@@ -103,7 +103,7 @@ export const ComponentMaterial = React.forwardRef(function ComponentMaterial(
         }
 
         return acc
-      }, DEFAULT_STATE),
+      }, Object.assign({}, DEFAULT_STATE)),
     [children]
   )
 

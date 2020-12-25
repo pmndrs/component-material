@@ -29,6 +29,7 @@ function Env() {
 
 function Scene() {
   const material = useRef()
+  const material2 = useRef()
 
   const { red, green, blue, metalness, roughness } = useTweaks({
     metalness: { value: 0.5, min: 0, max: 1 },
@@ -58,7 +59,25 @@ function Scene() {
           }
         `}</M.Common>
         <M.Frag.Body>{/*glsl*/ `
-          gl_FragColor = vec4(gl_FragColor.rgb, quadraticInOut((sin(time)+1.0)/2.0));  
+          gl_FragColor = vec4(gl_FragColor.rgb, quadraticInOut((sin(time)+1.0)/2.0));
+        `}</M.Frag.Body>
+      </M>
+      <M
+        ref={material2}
+        metalness={metalness}
+        roughness={roughness}
+        transparent
+        uniforms={{
+          time: { value: 0, type: 'float' },
+        }}>
+        <M.Common>{/*glsl*/ `
+          float quadraticInOut(float t) {
+            float p = 2.0 * t * t;
+            return t < 0.5 ? p : -p + (4.0 * t) - 1.0;
+          }
+        `}</M.Common>
+        <M.Frag.Body>{/*glsl*/ `
+          gl_FragColor = vec4(gl_FragColor.rgb, quadraticInOut((sin(time)+1.0)/2.0));
         `}</M.Frag.Body>
       </M>
     </Sphere>
