@@ -45,7 +45,7 @@ function CustomMaterial(props) {
 function Sphere() {
   return (
     <mesh>
-      <sphereBufferMaterial />
+      <sphereBufferGeometry />
       <CustomMaterial />
     </mesh>
 ```
