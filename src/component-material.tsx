@@ -1,6 +1,6 @@
 import React, { useMemo, useRef } from 'react'
 import { MeshPhysicalMaterial } from 'three'
-import { DEFAULT_STATE, FRAG, VERT } from './constants'
+import { FRAG, VERT } from './constants'
 import createMaterial from './create-material'
 import { ChildProps, ComponentMaterialProps, ExtensionShaderObject, ExtensionShadersObject, Uniforms } from './types'
 
@@ -103,7 +103,15 @@ export const ComponentMaterial = React.forwardRef(function ComponentMaterial(
         }
 
         return acc
-      }, DEFAULT_STATE),
+      }, {
+        vert: {
+          head: '',
+        },
+        frag: {
+          head: '',
+        },
+        common: '',
+      }),
     [children]
   )
 
