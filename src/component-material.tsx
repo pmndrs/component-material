@@ -54,7 +54,7 @@ export const ComponentMaterial = React.forwardRef(function ComponentMaterial(
     from = MeshPhysicalMaterial,
     ...props
   }: ComponentMaterialProps,
-  ref: React.MutableRefObject<THREE.Material>
+  ref: React.ForwardedRef<THREE.Material>
 ) {
   const uniformsRef = useRef(uniforms)
   const varyingsRef = useRef(varyings)
@@ -70,48 +70,51 @@ export const ComponentMaterial = React.forwardRef(function ComponentMaterial(
 
   const shaders = useMemo<ExtensionShadersObject>(
     () =>
-      React.Children.toArray(children).reduce((acc: any, child: any) => {
-        const shader = child?.props?.children
+      React.Children.toArray(children).reduce(
+        (acc: any, child: any) => {
+          const shader = child?.props?.children
 
-        if (typeof shader === 'string') {
-          const replaceChunk = child?.props?.replaceChunk || false
-          const { chunkName, shaderType }: ChildProps = child.type
+          if (typeof shader === 'string') {
+            const replaceChunk = child?.props?.replaceChunk || false
+            const { chunkName, shaderType }: ChildProps = child.type
 
-          if ([VERT, FRAG].includes(shaderType)) {
-            if (chunkName === 'Head') {
-              acc[shaderType].head = acc[shaderType].head.concat(`
+            if ([VERT, FRAG].includes(shaderType)) {
+              if (chunkName === 'Head') {
+                acc[shaderType].head = acc[shaderType].head.concat(`
                   ${shader}
                 `)
-            } else {
-              if (!acc[shaderType][chunkName]) {
-                acc[shaderType][chunkName] = {
-                  value: '',
-                  replaceChunk: false,
+              } else {
+                if (!acc[shaderType][chunkName]) {
+                  acc[shaderType][chunkName] = {
+                    value: '',
+                    replaceChunk: false,
+                  }
                 }
-              }
 
-              acc[shaderType][chunkName].replaceChunk = replaceChunk
-              acc[shaderType][chunkName].value = acc[shaderType][chunkName].value.concat(`
+                acc[shaderType][chunkName].replaceChunk = replaceChunk
+                acc[shaderType][chunkName].value = acc[shaderType][chunkName].value.concat(`
                     ${shader}
                   `)
-            }
-          } else {
-            acc.common = acc.common.concat(`
+              }
+            } else {
+              acc.common = acc.common.concat(`
                 ${shader}
               `)
+            }
           }
-        }
 
-        return acc
-      }, {
-        vert: {
-          head: '',
+          return acc
         },
-        frag: {
-          head: '',
-        },
-        common: '',
-      }),
+        {
+          vert: {
+            head: '',
+          },
+          frag: {
+            head: '',
+          },
+          common: '',
+        }
+      ),
     [children]
   )
 
