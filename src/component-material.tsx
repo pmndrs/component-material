@@ -54,8 +54,8 @@ export const ComponentMaterial = React.forwardRef(function ComponentMaterial(
     from = MeshPhysicalMaterial,
     ...props
   }: ComponentMaterialProps,
-  ref
-): any {
+  ref: React.MutableRefObject<THREE.Material>
+) {
   const uniformsRef = useRef(uniforms)
   const varyingsRef = useRef(varyings)
 
