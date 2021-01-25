@@ -1,17 +1,25 @@
 import { ComponentMaterial } from './component-material'
 import { frag, vert, common } from './proxies'
 
-type MT = typeof ComponentMaterial & {
+export type MT = {
+  (): typeof ComponentMaterial
   Vert: typeof vert
   Frag: typeof frag
   Common: typeof common
 }
 
-// @ts-ignore
-const M: MT = ComponentMaterial
+const M = ComponentMaterial
 
-M.Vert = vert
-M.Frag = frag
-M.Common = common
+Object.defineProperties(M, {
+  Vert: {
+    get: () => vert,
+  },
+  Frag: {
+    get: () => frag,
+  },
+  Common: {
+    get: () => common,
+  },
+})
 
 export default M

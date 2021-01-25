@@ -31,10 +31,13 @@ export type Uniforms = { [key: string]: Uniform }
 export interface GenericMaterial extends Material {
   [key: string]: any
 }
+export interface MaterialConstructor {
+  new (...args: any[]): GenericMaterial
+}
 export type ComponentMaterialProps = MaterialProps & {
   varyings: Uniforms
   uniforms: Uniforms
-  from: GenericMaterial
+  from?: MaterialConstructor
 }
 export type ChildProps = {
   chunkName: string

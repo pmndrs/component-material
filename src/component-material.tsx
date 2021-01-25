@@ -1,5 +1,4 @@
 import React, { useMemo, useRef } from 'react'
-import { MeshPhysicalMaterial } from 'three'
 import { FRAG, VERT } from './constants'
 import createMaterial from './create-material'
 import { ChildProps, ComponentMaterialProps, ExtensionShaderObject, ExtensionShadersObject, Uniforms } from './types'
@@ -45,16 +44,9 @@ function addVarying(shader: string, varying: Uniforms) {
   `
 }
 
-export const ComponentMaterial = React.forwardRef(function ComponentMaterial(
-  {
-    children,
-    varyings = {},
-    uniforms = {},
-    // @ts-ignore
-    from = MeshPhysicalMaterial,
-    ...props
-  }: ComponentMaterialProps,
-  ref: React.ForwardedRef<THREE.Material>
+export const ComponentMaterial = React.forwardRef<THREE.Material, ComponentMaterialProps>(function ComponentMaterial(
+  { children, varyings = {}, uniforms = {}, from, ...props },
+  ref
 ) {
   const uniformsRef = useRef(uniforms)
   const varyingsRef = useRef(varyings)
