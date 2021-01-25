@@ -1,18 +1,19 @@
 import 'react-app-polyfill/ie11'
-import React, { Suspense, useEffect, useRef } from 'react'
+import * as React from 'react'
+import { Suspense, useEffect, useRef } from 'react'
 import { Canvas, useFrame, useLoader, useThree } from 'react-three-fiber'
 import { Sphere } from '@react-three/drei'
 import { useTweaks } from 'use-tweaks'
 import * as THREE from 'three'
 import { RGBELoader } from 'three/examples/jsm/loaders/RGBELoader'
 
-import M from '../../src/index'
+import M, { GenericMaterial } from '../../src/index'
 import hdr from '../studio_small_04_1k.hdr'
 import voronoi from '../voronoi'
 
 function Env() {
   const { gl, scene } = useThree()
-  const result = useLoader(RGBELoader, hdr)
+  const result = useLoader(RGBELoader, hdr) as THREE.DataTexture
 
   useEffect(() => {
     const gen = new THREE.PMREMGenerator(gl)
@@ -29,7 +30,7 @@ function Env() {
 }
 
 function Scene(): JSX.Element {
-  const material = useRef()
+  const material = useRef<GenericMaterial>()
   const sphere = useRef()
 
   const { amplitude, frequency, jitter, metalness, roughness } = useTweaks({
@@ -111,10 +112,10 @@ function Scene(): JSX.Element {
 function App() {
   return (
     <Canvas camera={{ position: [0, 0, 10] }}>
-      <color args={['#000']} attach="background" />
+      <color args={[0, 0, 0]} attach="background" />
       <directionalLight position={[0, 0, 10]} intensity={0.4} />
-      <spotLight position={[8, 8, -8]} radius={Math.PI} intensity={1} />
-      <spotLight position={[-4, 8, 4]} color="blue" radius={Math.PI} intensity={0.4} />
+      <spotLight position={[8, 8, -8]} angle={Math.PI} intensity={1} />
+      <spotLight position={[-4, 8, 4]} color="blue" angle={Math.PI} intensity={0.4} />
       <directionalLight position={[4, -8, 0]} color="red" intensity={0.4} />
       <Scene />
       <Suspense fallback={null}>
