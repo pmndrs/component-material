@@ -13,6 +13,7 @@ Material is a React utility that helps you compose and modify materials in [reac
 <p align="center">
   <a href="https://codesandbox.io/embed/component-material-distortion-example-p4cly?fontsize=14&hidenavigation=1&theme=dark"><img width="274" height="150" src="https://raw.githubusercontent.com/emmelleppi/component-material/master/readme/distortion.jpg" /></a>
   <a href="https://codesandbox.io/embed/component-material-voronoi-example-cuq2n?fontsize=14&hidenavigation=1&theme=dark"><img width="274"  height="150" src="https://raw.githubusercontent.com/emmelleppi/component-material/master/readme/voronoi.jpg" /></a>
+  <a href="https://codesandbox.io/embed/component-material-multiple-instances-bxr5u?fontsize=14&hidenavigation=1&theme=dark"><img width="274"  height="150" src="https://raw.githubusercontent.com/emmelleppi/component-material/master/readme/multiple-instances.jpg" /></a>
 </p>
 
 ## Quick start
