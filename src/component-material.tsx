@@ -1,7 +1,8 @@
 import React, { useMemo, useRef } from 'react'
 import { FRAG, VERT } from './constants'
 import createMaterial from './create-material'
-import { ChildProps, ComponentMaterialProps, ExtensionShaderObject, ExtensionShadersObject, Uniforms } from './types'
+import { ChildProps, ExtensionShaderObject, ExtensionShadersObject, Uniforms } from './types/internal'
+import { ComponentMaterialProps } from './types/index'
 
 function editShader(shader: string, extensions: ExtensionShaderObject) {
   Object.entries(extensions).forEach(([key, { value, replaceChunk }]) => {

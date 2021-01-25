@@ -1,5 +1,5 @@
 import { DEFAULT_FRAG_CHUNK, DEFAULT_VERT_CHUNK, FRAG, VERT } from './constants'
-import { ProxyProps } from './types'
+import { ProxyProps } from './types/internal'
 
 import { fragmentChunks, vertexChunks, commonChunks } from './generated'
 

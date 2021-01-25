@@ -1,6 +1,3 @@
-import { MaterialProps } from 'react-three-fiber'
-import { Material } from 'three'
-
 export type ProxyProps = {
   children: string[]
 }
@@ -28,17 +25,6 @@ export type Uniform = {
   type: string
 }
 export type Uniforms = { [key: string]: Uniform }
-export interface GenericMaterial extends Material {
-  [key: string]: any
-}
-export interface MaterialConstructor {
-  new (...args: any[]): GenericMaterial
-}
-export type ComponentMaterialProps = MaterialProps & {
-  varyings: Uniforms
-  uniforms: Uniforms
-  from?: MaterialConstructor
-}
 export type ChildProps = {
   chunkName: string
   shaderType: string

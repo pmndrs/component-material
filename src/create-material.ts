@@ -1,7 +1,8 @@
 import { MeshPhysicalMaterial, Shader } from 'three'
 
 import { getKeyValue, setKeyValue } from './helpers/objects'
-import { MaterialConstructor, Uniforms } from './types'
+import { MaterialConstructor } from './types/index'
+import { Uniforms } from './types/internal'
 
 function createMaterial(
   baseMaterial: MaterialConstructor = MeshPhysicalMaterial,
