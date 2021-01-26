@@ -1,5 +1,5 @@
 import { DEFAULT_FRAG_CHUNK, DEFAULT_VERT_CHUNK, FRAG, VERT } from './constants'
-import { ProxyProps } from './types/internal'
+import { ProxyProps, ProxyComponent } from './types/internal'
 
 import { fragmentChunks, vertexChunks, commonChunks } from './generated'
 
@@ -10,7 +10,8 @@ function NullFunction() {
 type ShaderProxyHelper<T extends string> = {
   [key in T]: any
 } & {
-  Body: any
+  Body: ProxyComponent
+  Head: ProxyComponent
 }
 
 // -- VERTEX PROXY --

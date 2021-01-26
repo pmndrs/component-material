@@ -1,6 +1,7 @@
 export type ProxyProps<Child extends string | string[]> = {
   children: Child
 }
+export type ProxyComponent = <Child extends string[] | string>(props: ProxyProps<Child>) => JSX.Element
 export type ExtensionsType = {
   value?: string
   replaceChunk: boolean
