@@ -7,8 +7,8 @@ export interface MaterialConstructor {
   new (...args: any[]): GenericMaterial
 }
 export type ComponentMaterialProps = MaterialProps & {
-  varyings: Varyings
-  uniforms: Uniforms
+  varyings?: Varyings
+  uniforms?: Uniforms
   from?: MaterialConstructor
 }
 export interface GenericMaterial extends Material {
