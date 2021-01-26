@@ -10,8 +10,6 @@ function createMaterial(
   onBeforeCompile?: (shader: Shader) => void
 ) {
   return class ComponentMaterial extends baseMaterial {
-    [key: string]: any
-
     constructor(parameters = {}) {
       const entries = Object.keys(uniforms)
       super(parameters)
