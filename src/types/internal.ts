@@ -1,5 +1,5 @@
-export type ProxyProps = {
-  children: string[]
+export type ProxyProps<Child extends string | string[]> = {
+  children: Child
 }
 export type ExtensionsType = {
   value?: string

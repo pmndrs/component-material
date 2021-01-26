@@ -13,13 +13,13 @@ const M = ComponentMaterial
 
 Object.defineProperties(ComponentMaterial, {
   Vert: {
-    get: () => vert,
+    get: (): typeof vert => vert,
   },
   Frag: {
-    get: () => frag,
+    get: (): typeof frag => frag,
   },
   Common: {
-    get: () => common,
+    get: (): typeof common => common,
   },
 })
 

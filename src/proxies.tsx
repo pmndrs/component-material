@@ -16,7 +16,7 @@ type ShaderProxyHelper<T extends string> = {
 // -- VERTEX PROXY --
 const vertHandler = {
   get: function(_: any, name: string) {
-    const Component = function({ children }: ProxyProps) {
+    const Component = function<Child extends string[] | string>({ children }: ProxyProps<Child>) {
       return children
     }
     Object.defineProperty(Component, 'chunkName', { writable: true })
@@ -31,7 +31,7 @@ export const vert: ShaderProxyHelper<vertexChunks | commonChunks> = new Proxy(Nu
 // -- FRAGMENT PROXY --
 const fragHandler = {
   get: function(_: any, name: string) {
-    const Component = function({ children }: ProxyProps) {
+    const Component = function<Child extends string[] | string>({ children }: ProxyProps<Child>) {
       return children
     }
     Object.defineProperty(Component, 'chunkName', { writable: true })
@@ -44,8 +44,8 @@ const fragHandler = {
 
 export const frag: ShaderProxyHelper<fragmentChunks | commonChunks> = new Proxy(NullFunction, fragHandler)
 
-export function common({ children }: ProxyProps) {
-  return children
+export function common<Child extends string[] | string>({ children }: ProxyProps<Child>) {
+  return (children as unknown) as JSX.Element
 }
 
 // TODO

@@ -2,7 +2,7 @@ import React, { useMemo, useRef } from 'react'
 import { FRAG, VERT } from './constants'
 import createMaterial from './create-material'
 import { ChildProps, ExtensionShaderObject, ExtensionShadersObject, Uniforms } from './types/internal'
-import { ComponentMaterialProps } from './types/index'
+import { ComponentMaterialProps, GenericMaterial } from './types/index'
 
 function editShader(shader: string, extensions: ExtensionShaderObject) {
   Object.entries(extensions).forEach(([key, { value, replaceChunk }]) => {
@@ -45,7 +45,7 @@ function addVarying(shader: string, varying: Uniforms) {
   `
 }
 
-export const ComponentMaterial = React.forwardRef<THREE.Material, ComponentMaterialProps>(function ComponentMaterial(
+export const ComponentMaterial = React.forwardRef<GenericMaterial, ComponentMaterialProps>(function ComponentMaterial(
   { children, varyings = {}, uniforms = {}, from, ...props },
   ref
 ) {
