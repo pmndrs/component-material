@@ -1,13 +1,13 @@
 import { MaterialProps } from 'react-three-fiber'
 import { Material } from 'three'
 
-import { Uniforms } from './internal'
+import { Uniforms, Varyings } from './internal'
 
 export interface MaterialConstructor {
   new (...args: any[]): GenericMaterial
 }
 export type ComponentMaterialProps = MaterialProps & {
-  varyings: Uniforms
+  varyings: Varyings
   uniforms: Uniforms
   from?: MaterialConstructor
 }

@@ -6,8 +6,8 @@ export type ExtensionsType = {
   value?: string
   replaceChunk: boolean
 }
-export type Uniform = {
-  value:
+export type GLProp = {
+  value?:
     | number
     | string
     | boolean
@@ -25,7 +25,10 @@ export type Uniform = {
     | THREE.CubeTexture
   type: string
 }
-export type Uniforms = { [key: string]: Uniform }
+export type Uniforms = { [key: string]: GLProp }
+export type Varyings = {
+  [key: string]: Omit<GLProp, 'value'>
+}
 export type ChildProps = {
   chunkName: string
   shaderType: string
