@@ -1,3 +1,24 @@
+import {
+  MaterialProps,
+  ShadowMaterialProps,
+  SpriteMaterialProps,
+  RawShaderMaterialProps,
+  ShaderMaterialProps,
+  PointsMaterialProps,
+  MeshPhysicalMaterialProps,
+  MeshStandardMaterialProps,
+  MeshPhongMaterialProps,
+  MeshToonMaterialProps,
+  MeshNormalMaterialProps,
+  MeshLambertMaterialProps,
+  MeshDepthMaterialProps,
+  MeshDistanceMaterialProps,
+  MeshBasicMaterialProps,
+  MeshMatcapMaterialProps,
+  LineDashedMaterialProps,
+  LineBasicMaterialProps,
+} from 'react-three-fiber'
+
 export type ProxyProps<Child extends string | string[]> = {
   children: Child
 }
@@ -41,3 +62,21 @@ export type ExtensionShadersObject = {
   frag: ExtensionShaderObject & { head: string }
   common: string
 }
+export type AllMaterialProps = MaterialProps &
+  ShadowMaterialProps &
+  SpriteMaterialProps &
+  RawShaderMaterialProps &
+  ShaderMaterialProps &
+  PointsMaterialProps &
+  MeshPhysicalMaterialProps &
+  MeshStandardMaterialProps &
+  MeshPhongMaterialProps &
+  MeshToonMaterialProps &
+  MeshNormalMaterialProps &
+  MeshLambertMaterialProps &
+  MeshDepthMaterialProps &
+  MeshDistanceMaterialProps &
+  MeshBasicMaterialProps &
+  MeshMatcapMaterialProps &
+  LineDashedMaterialProps &
+  LineBasicMaterialProps
