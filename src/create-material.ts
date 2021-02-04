@@ -1,46 +1,51 @@
-// @ts-nocheck
-import { MeshPhysicalMaterial, Material, ShaderMaterial } from 'three'
+import { MeshPhysicalMaterial, Shader } from 'three'
+
+import { getKeyValue, setKeyValue } from './helpers/objects'
+import { MaterialConstructor } from './types/index'
+import { Uniforms } from './types/internal'
 
 function createMaterial(
-  baseMaterial: Material = MeshPhysicalMaterial,
-  uniforms?: any,
-  onBeforeCompile?: (shader: ShaderMaterial) => void
+  baseMaterial: MaterialConstructor = MeshPhysicalMaterial,
+  uniforms: Uniforms = {},
+  onBeforeCompile?: (shader: Shader) => void
 ) {
-  return class extends baseMaterial {
+  return class ComponentMaterial extends baseMaterial {
     constructor(parameters = {}) {
-      const entries = Object.entries(uniforms)
+      const entries = Object.keys(uniforms)
       super(parameters)
       this.setValues(parameters)
 
-      entries.forEach(([name]) => {
-        this[`_${name}`] = { value: entries[name] }
-
-        Object.defineProperty(this, name, {
-          get: () => this[`_${name}`].value,
-          set: v => (this[`_${name}`].value = v),
+      entries.forEach(key => {
+        setKeyValue(this, `_${key}`, { value: uniforms[key] })
+        Object.defineProperty(this, key, {
+          get: () => this[`_${key}`].value,
+          set: v => (this[`_${key}`].value = v),
         })
       })
     }
 
-    onBeforeCompile(shader) {
+    onBeforeCompile(shader: Shader) {
       const handler = {
-        get: function(target, name) {
-          return target[name]
+        get: function(target: Shader, key: keyof Shader) {
+          return getKeyValue(target, key)
         },
-        set: function(obj, prop, value) {
-          obj[prop] = value
-          return obj
+        set: function(target: Shader, key: keyof Shader, value: any) {
+          setKeyValue(target, key, value)
+          // Accoring to ProxyHandler, the set function should return a boolean.
+          return true
         },
       }
 
-      const entries = Object.entries(uniforms)
-      entries.forEach(([name]) => {
-        shader.uniforms[name] = this[`_${name}`]
+      const entries = Object.keys(uniforms)
+      entries.forEach(key => {
+        shader.uniforms[key] = this[`_${key}`]
       })
 
       const proxiedShader = new Proxy(shader, handler)
 
-      onBeforeCompile(proxiedShader)
+      if (onBeforeCompile) {
+        onBeforeCompile(proxiedShader)
+      }
     }
   }
 }

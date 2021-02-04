@@ -1,18 +1,20 @@
 import 'react-app-polyfill/ie11'
-import React,{ Suspense, useEffect, useRef } from 'react'
+import * as React from 'react'
+import { Suspense, useEffect, useRef } from 'react'
 import { Canvas, useFrame, useLoader, useThree } from 'react-three-fiber'
 import { Sphere } from '@react-three/drei'
 import { useTweaks } from 'use-tweaks'
 import * as THREE from 'three'
 import { RGBELoader } from 'three/examples/jsm/loaders/RGBELoader'
+
 import hdr from '../studio_small_04_1k.hdr'
 import distortion from '../simplex3d'
 
-import M from '../../src/index'
+import M, { GenericMaterial } from '../../src/index'
 
 function Env() {
   const { gl, scene } = useThree()
-  const result = useLoader(RGBELoader, hdr)
+  const result = useLoader(RGBELoader, hdr) as THREE.DataTexture
 
   useEffect(() => {
     const gen = new THREE.PMREMGenerator(gl)
@@ -30,7 +32,7 @@ function Env() {
 const RADIUS = 4
 
 function CustomMaterial(props) {
-  const material = useRef()
+  const material = useRef<GenericMaterial>()
   const { metalness, clearcoat, roughness, radiusVariationAmplitude, radiusNoiseFrequency } = useTweaks({
     metalness: { value: 1, min: 0, max: 1 },
     clearcoat: { value: 0.6, min: 0, max: 1 },
@@ -44,19 +46,19 @@ function CustomMaterial(props) {
     }
   })
   return (
-      <M
-        ref={material}
-        clearcoat={clearcoat}
-        metalness={metalness}
-        roughness={roughness}
-        {...props}
-        uniforms={{
-          radius: { value: RADIUS, type: 'float' },
-          time: { value: 0, type: 'float' },
-          radiusVariationAmplitude: { value: radiusVariationAmplitude, type: 'float' },
-          radiusNoiseFrequency: { value: radiusNoiseFrequency, type: 'float' },
-        }}>
-        <M.Vert.Head>{/*glsl*/ `
+    <M
+      ref={material}
+      clearcoat={clearcoat}
+      metalness={metalness}
+      roughness={roughness}
+      {...props}
+      uniforms={{
+        radius: { value: RADIUS, type: 'float' },
+        time: { value: 0, type: 'float' },
+        radiusVariationAmplitude: { value: radiusVariationAmplitude, type: 'float' },
+        radiusNoiseFrequency: { value: radiusNoiseFrequency, type: 'float' },
+      }}>
+      <M.Vert.Head>{/*glsl*/ `
           ${distortion}
           
           float fsnoise(float val1, float val2, float val3){
@@ -87,18 +89,18 @@ function CustomMaterial(props) {
             return normalize(cross(distorted1 - distortedPosition, distorted2 - distortedPosition));
           }
         `}</M.Vert.Head>
-        <M.Vert.Body>{/*glsl*/ `
+      <M.Vert.Body>{/*glsl*/ `
           float updateTime = time / 10.0;
           transformed = distortFunct(transformed, 1.0);
           vec3 distortedNormal = distortNormal(position, transformed, normal);
           vNormal = normal + distortedNormal;
           gl_Position = projectionMatrix * modelViewMatrix * vec4(transformed,1.);
         `}</M.Vert.Body>
-      </M>
+    </M>
   )
 }
 
-function Scene({color, ...props}) {
+function Scene({ color, ...props }) {
   return (
     <Sphere args={[1, 512, 512]} {...props}>
       <CustomMaterial color={color} />
@@ -110,14 +112,14 @@ function App() {
   return (
     <>
       <Canvas camera={{ position: [0, 0, 10] }}>
-        <color args={[0,0,0]} attach="background" />
+        <color args={[0, 0, 0]} attach="background" />
         <ambientLight intensity={0.2} />
         <directionalLight position={[3, 3, -3]} intensity={4} />
         <directionalLight position={[-10, 10, -10]} intensity={1} />
-        <Scene scale={[0.2,0.2,0.2]} position-x={-6} color="purple"/>
-        <Scene scale={[0.2,0.2,0.2]} position-x={-2} color="red"/>
-        <Scene scale={[0.2,0.2,0.2]} position-x={2} color="green"/>
-        <Scene scale={[0.2,0.2,0.2]} position-x={6} color="yellow"/>
+        <Scene scale={[0.2, 0.2, 0.2]} position-x={-6} color="purple" />
+        <Scene scale={[0.2, 0.2, 0.2]} position-x={-2} color="red" />
+        <Scene scale={[0.2, 0.2, 0.2]} position-x={2} color="green" />
+        <Scene scale={[0.2, 0.2, 0.2]} position-x={6} color="yellow" />
         <Suspense fallback={null}>
           <Env />
         </Suspense>
