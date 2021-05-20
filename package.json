@@ -30,7 +30,7 @@
   },
   "husky": {
     "hooks": {
-      "pre-commit": "tsdx lint"
+      "pre-commit": "tsdx lint --fix"
     }
   },
   "prettier": {
@@ -54,20 +54,24 @@
     }
   ],
   "devDependencies": {
-    "@babel/core": "^7.12.9",
+    "@babel/core": "7.13.13",
+    "@babel/preset-env": "^7.14.2",
+    "@babel/preset-react": "7.13.13",
+    "@babel/preset-typescript": "^7.13.0",
     "@size-limit/preset-small-lib": "^4.9.0",
     "@types/react": "^17.0.0",
     "@types/react-dom": "^17.0.0",
+    "@types/three": "^0.126.2",
     "babel-loader": "^8.2.2",
     "husky": "^4.3.0",
-    "react": "^17.0.1",
-    "react-dom": "^17.0.1",
-    "react-is": "^17.0.1",
+    "react": "^17.0.2",
+    "react-dom": "^17.0.2",
+    "react-is": "^17.0.2",
+    "react-three-fiber": "^6.0.13",
     "size-limit": "^4.9.0",
+    "three": "^0.128.0",
     "tsdx": "^0.14.1",
     "tslib": "^2.0.3",
-    "typescript": "^4.1.2",
-    "react-three-fiber": "^5.3.3",
-    "three": "^0.123.0"
+    "typescript": "^4.1.2"
   }
 }

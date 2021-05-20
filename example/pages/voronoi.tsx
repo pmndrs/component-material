@@ -1,33 +1,11 @@
 import 'react-app-polyfill/ie11'
 import * as React from 'react'
-import { Suspense, useEffect, useRef } from 'react'
-import { Canvas, useFrame, useLoader, useThree } from 'react-three-fiber'
-import { Sphere } from '@react-three/drei'
+import { Suspense, useRef } from 'react'
+import { Canvas, useFrame } from 'react-three-fiber'
+import { Environment, Sphere } from '@react-three/drei'
 import { useTweaks } from 'use-tweaks'
-import * as THREE from 'three'
-import { RGBELoader } from 'three/examples/jsm/loaders/RGBELoader'
-
-import M, { GenericMaterial } from '../../src/index'
-import hdr from '../studio_small_04_1k.hdr'
+import M, { GenericMaterial } from '../../dist'
 import voronoi from '../voronoi'
-
-function Env() {
-  const { gl, scene } = useThree()
-  const result = useLoader(RGBELoader, hdr) as THREE.DataTexture
-
-  useEffect(() => {
-    const gen = new THREE.PMREMGenerator(gl)
-    const texture = gen.fromEquirectangular(result).texture
-    scene.environment = texture
-    result.dispose()
-    gen.dispose()
-    return () => {
-      scene.environment = scene.background = null
-    }
-  }, [gl, result, scene])
-
-  return null
-}
 
 function Scene(): JSX.Element {
   const material = useRef<GenericMaterial>()
@@ -119,7 +97,7 @@ function App() {
       <directionalLight position={[4, -8, 0]} color="red" intensity={0.4} />
       <Scene />
       <Suspense fallback={null}>
-        <Env />
+        <Environment preset="studio" />
       </Suspense>
     </Canvas>
   )
