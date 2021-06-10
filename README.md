@@ -209,7 +209,7 @@ When working with three.js it's often important to re-use the same instance of a
 ```jsx
 // MyMaterial.js
 // We define the material using React.forwardRef
-export const MyMaterial = React.forwardRef((props, ref) => (
+const MyMaterial = React.forwardRef((props, ref) => (
   <ComponentMaterial
     ref={ref}
     ...
@@ -225,7 +225,7 @@ export function MyWorld() {
   return (
     <>
       // Define the material once in the tree, using the ref
-      <WobblyMaterial ref={matRef} />
+      <MyMaterial ref={matRef} />
       // Use material as many times as we want, using the state object
       <mesh geometry={someGeometry} material={material} />
       <mesh geometry={someGeometry} material={material} />
