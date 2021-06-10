@@ -202,3 +202,33 @@ The `Common` tag is useful in case vertex shader and fragment shader share some 
   }`}
 />
 ```
+
+### Re-use the same instance
+When working with three.js it's often important to re-use the same instance of a material across multiple meshes. If you have hundreds of meshes each creating a new material this can be quite costly for performance. Sharing a material is usually achieved by defining the material once (e.g. at the top of your file) and then declaring it wherever needed. When your material is a component, this isn't so simple. You need to store it as a ref. Here's how:
+
+```jsx
+// MyMaterial.js
+// We define the material using React.forwardRef
+export const MyMaterial = React.forwardRef((props, ref) => (
+  <ComponentMaterial
+    ref={ref}
+    ...
+  >
+
+// MyWorld.js
+export function MyWorld() {
+  // Create a ref and keep it in state
+  const matRef = useRef()
+  const [material, set] = useState()
+  useEffect(() => void set(matRef.current), [])
+
+  return (
+    <>
+      // Define the material once in the tree, using the ref
+      <WobblyMaterial ref={matRef} />
+      // Use material as many times as we want, using the state object
+      <mesh geometry={someGeometry} material={material} />
+      <mesh geometry={someGeometry} material={material} />
+    </>
+  )
+}
